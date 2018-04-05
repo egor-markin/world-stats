@@ -3,11 +3,13 @@ package ru.rustyskies;
 import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
 import ru.rustyskies.beans.Country;
+import ru.rustyskies.beans.Field;
 import services.GoogleSheetsApi;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -22,28 +24,40 @@ public class GoogleSheetsReport {
 
     private static final String PAGE_ID = "Sheet2";
 
-    private static final String[] COLUMNS = new String[] {
-            "Name",
-            "City",
-            "Type",
-            "Population"
+    private static final Field[] COLUMNS = new Field[] {
+            Field.Population,
+            Field.Area,
+            Field.PopulationDensity
     };
 
-    public void updateGoogleSheetsPage() {
+    public void updateGoogleSheetsPage(List<Map<Field, Object>> countries) {
         GoogleSheetsApi api = GoogleSheetsApi.INSTANCE;
 
         // Clearing the target page
         api.clearPage(SPREADSHEET_ID, PAGE_ID);
 
-        // Header row
-        api.writeRow(SPREADSHEET_ID, PAGE_ID, "A1:1", new ArrayList<>(Arrays.asList(COLUMNS)));
+        // Header
+        List<Object> columns = new ArrayList<>();
+        columns.add("Country");
+        columns.add("City");
+        columns.add("Type");
+        for (Field f : COLUMNS) {
+            columns.add(f.title + " (" + f.unit + ")");
+        }
+        api.writeRow(SPREADSHEET_ID, PAGE_ID, "A1:1", columns);
 
-        // Countries column
-        List<String> countries = Arrays.stream(Country.values()).map(Country::getTitle).collect(Collectors.toList());
-        api.writeColumn(SPREADSHEET_ID, PAGE_ID, "A2:A", new ArrayList<>(countries));
-
-        // Population
-//        RestCountriesEU.INSTANCE.countries
-        api.writeColumn(SPREADSHEET_ID, PAGE_ID, "D2:D", new ArrayList<>());
+        // Countries
+        int rowIndex = 2;
+        for (Map<Field, Object> c : countries) {
+            List<Object> data = new ArrayList<>();
+            data.add(c.get(Field.Name)); // Country
+            data.add("Whole Country"); // City
+            data.add("Country"); // Type
+            for (Field f : COLUMNS) {
+                data.add(c.get(f));
+            }
+            api.writeRow(SPREADSHEET_ID, PAGE_ID, "A" + rowIndex + ":" + rowIndex, data);
+            rowIndex++;
+        }
     }
 }

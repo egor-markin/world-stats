@@ -91,7 +91,11 @@ public enum RestCountriesEU {
     }
 
     public static void main(String args[]) {
-        System.out.println(INSTANCE.getCountryCodes());
-        System.out.println(INSTANCE.getCountry("RUS"));
+//        System.out.println(INSTANCE.getCountryCodes());
+//        System.out.println(INSTANCE.getCountry("RUS"));
+
+        for (String code : INSTANCE.getCountryCodes()) {
+            System.out.println(code + " - " + INSTANCE.getCountry(code));
+        }
     }
 }
