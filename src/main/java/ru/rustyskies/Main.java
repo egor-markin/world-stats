@@ -6,8 +6,6 @@ import ru.rustyskies.beans.City;
 import ru.rustyskies.beans.Country;
 import ru.rustyskies.beans.Field;
 import ru.rustyskies.datasource.RestCountriesEU;
-import ru.rustyskies.datasource.WikipediaInfoboxParser;
-import ru.rustyskies.datasource.WikipediaPageParser;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -64,7 +62,7 @@ public class Main {
             // http://api.worldbank.org/v2/countries/rus/indicators/NY.GDP.MKTP.CD?date=2017:2017
             // http://api.worldbank.org/v2/countries/rus/indicators/NY.GDP.MKTP.CD
         }
-        GoogleSheetsReport.updateGoogleSheetsPage(countries);
+        GoogleSheetsReport.updateGoogleSheets(countries);
     }
 
 
