@@ -134,6 +134,14 @@ public enum GoogleSheetsApi {
         return writeRange(spreadsheetId, sheetId, columnRange, data);
     }
 
+    public BatchUpdateSpreadsheetResponse executeBatchUpdate(String spreadsheetId, List<Request> requests) {
+        try {
+            return SHEETS.spreadsheets().batchUpdate(spreadsheetId, new BatchUpdateSpreadsheetRequest().setRequests(requests)).execute();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     public UpdateValuesResponse writeRow(String spreadsheetId, String sheetId, String rowRange, List<Object> columns) {
         return writeRange(spreadsheetId, sheetId, rowRange, Collections.singletonList(columns));
     }
@@ -143,32 +151,18 @@ public enum GoogleSheetsApi {
     }
 
     public BatchUpdateSpreadsheetResponse updateCellFormat(String spreadsheetId, String sheetId, String range, CellFormat cellFormat) {
-        // https://stackoverflow.com/questions/40263978/how-to-use-google-java-sheet-api-v4-to-format-cells-as-number-and-date
-        // https://stackoverflow.com/questions/37986171/google-sheet-api-v4java-append-date-in-cells
-        List<CellData> cellData = new ArrayList<>();
-        cellData.add(new CellData().setUserEnteredFormat(cellFormat));
-
-        // TODO Join writeRange & this method since this method also writes data
-
-        List<RowData> rowData = new ArrayList<>();
-        rowData.add(new RowData().setValues(cellData));
-
-        UpdateCellsRequest requestBody = new UpdateCellsRequest();
-        requestBody.setRows(rowData);
-        requestBody.setRange(convertRange(spreadsheetId, sheetId, range));
-        requestBody.setFields("*");
-
-        BatchUpdateSpreadsheetRequest batchRequests = new BatchUpdateSpreadsheetRequest();
-        batchRequests.setRequests(Collections.singletonList(new Request().setUpdateCells(requestBody)));
-
+        BatchUpdateSpreadsheetRequest batchRequests = new BatchUpdateSpreadsheetRequest().setRequests(
+                Collections.singletonList(new Request().setRepeatCell(new RepeatCellRequest()
+                        .setCell(new CellData().setUserEnteredFormat(cellFormat))
+                        .setRange(convertRange(spreadsheetId, sheetId, range))
+                        .setFields("userEnteredFormat"))));
         try {
             return SHEETS.spreadsheets().batchUpdate(spreadsheetId, batchRequests).execute();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
-
-    private Sheet getSheetById(String spreadsheetId, String sheetId) {
+    public Sheet getSheetById(String spreadsheetId, String sheetId) {
         try {
             Spreadsheet spreadsheet = SHEETS.spreadsheets().get(spreadsheetId).setFields("sheets.properties").execute();
             for (Sheet sheet : spreadsheet.getSheets()) {
@@ -186,19 +180,19 @@ public enum GoogleSheetsApi {
         // https://developers.google.com/resources/api-libraries/documentation/sheets/v4/java/latest/com/google/api/services/sheets/v4/model/GridRange.html
         // https://tanaikech.github.io/2017/07/31/converting-a1notation-to-gridrange-for-google-sheets-api/
         // https://github.com/Tsar/Spreadsheet/blob/master/Spreadsheet.py#L131
+        // https://developers.google.com/sheets/api/samples/sheet
 
         Sheet sheet = getSheetById(spreadsheetId, sheetId);
         if (sheet == null) {
             throw new RuntimeException("No sheet \"" + sheetId + "\" found at " + spreadsheetId);
         }
 
-        Matcher matcher = Pattern.compile("([a-zA-Z]+)(\\d+):([a-zA-Z]*)(\\d*)").matcher(range);
+        Matcher matcher = Pattern.compile("([a-zA-Z]*)(\\d*):([a-zA-Z]*)(\\d*)").matcher(range);
         if (!matcher.find()) {
             throw new RuntimeException("Incorrect range formatted string: " + range);
         }
 
         GridRange gr = new GridRange();
-
         gr.setSheetId(sheet.getProperties().getSheetId());
 
         // Start column
@@ -207,7 +201,7 @@ public enum GoogleSheetsApi {
 
         // End column
         int ec = stringToNumber(matcher.group(3));
-        gr.setEndColumnIndex(ec == 0 ? 10 : ec);
+        gr.setEndColumnIndex(ec == 0 ? sheet.getProperties().getGridProperties().getColumnCount() : ec);
 
         // Start row
         int sr = parseInt(matcher.group(2));
@@ -215,7 +209,7 @@ public enum GoogleSheetsApi {
 
         // End row
         int er = parseInt(matcher.group(4));
-        gr.setEndRowIndex(er == 0 ? 10 : er);
+        gr.setEndRowIndex(er == 0 ? sheet.getProperties().getGridProperties().getRowCount() : er);
 
         // DEBUG
 //        System.out.println(range + " -> " + gr);
@@ -244,7 +238,7 @@ public enum GoogleSheetsApi {
     }
 
     public static void main(String[] args) {
-        GridRange gr = INSTANCE.convertRange(GoogleSheetsReport.SPREADSHEET_ID, GoogleSheetsReport.SHEET_ID, "A1:A1");
+        GridRange gr = INSTANCE.convertRange(GoogleSheetsReport.SPREADSHEET_ID, GoogleSheetsReport.SHEET_ID, "3:5");
         System.out.println(gr);
     }
 
