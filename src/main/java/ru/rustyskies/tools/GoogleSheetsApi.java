@@ -1,4 +1,4 @@
-package services;
+package ru.rustyskies.tools;
 
 import com.google.api.client.auth.oauth2.Credential;
 import com.google.api.client.extensions.java6.auth.oauth2.AuthorizationCodeInstalledApp;
@@ -63,10 +63,8 @@ public enum GoogleSheetsApi {
             SCOPES = Collections.singletonList(SheetsScopes.SPREADSHEETS);
             JSON_FACTORY = JacksonFactory.getDefaultInstance();
             HTTP_TRANSPORT = GoogleNetHttpTransport.newTrustedTransport();
-            /* Directory to store user credentials for this application. */
-            File dataStoreDir = new File(System.getProperty("user.home"),
-                    ".credentials/sheets.googleapis.com-java-" + APPLICATION_NAME);
-            DATA_STORE_FACTORY = new FileDataStoreFactory(dataStoreDir);
+            DATA_STORE_FACTORY = new FileDataStoreFactory(new File(System.getProperty("user.home"),
+                    ".credentials/sheets.googleapis.com-java-" + APPLICATION_NAME));
             SHEETS = new Sheets.Builder(HTTP_TRANSPORT, JSON_FACTORY, authorize()).setApplicationName(APPLICATION_NAME).build();
             VALUES = SHEETS.spreadsheets().values();
         } catch (IOException | GeneralSecurityException e) {

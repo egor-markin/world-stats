@@ -1,11 +1,10 @@
-package ru.rustyskies.datasource;
+package ru.rustyskies.tools;
 
 import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
 import ru.rustyskies.beans.City;
 import ru.rustyskies.beans.Country;
 import ru.rustyskies.beans.Field;
-import ru.rustyskies.utils.WikipediaUtils;
 
 import java.util.HashMap;
 import java.util.Map;

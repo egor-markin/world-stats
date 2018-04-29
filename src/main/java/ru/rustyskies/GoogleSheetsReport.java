@@ -4,9 +4,10 @@ import com.google.api.services.sheets.v4.model.*;
 import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
 import ru.rustyskies.beans.Field;
-import services.GoogleSheetsApi;
+import ru.rustyskies.tools.GoogleSheetsApi;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -22,20 +23,16 @@ public class GoogleSheetsReport {
 
     public static final String SHEET_ID = "Sheet2";
 
-    private static final Field[] HEADER_COLUMNS = new Field[] {
+    private static final List<Field> PREDEFINED_HEADER_COLUMNS = Arrays.asList(
             Field.Country,
             Field.City,
-            Field.Type,
-            Field.Population,
-            Field.Area,
-            Field.PopulationDensity
-    };
+            Field.Type
+    );
+
+    private static final Float[] HEADER_COLOR_RGB = new Float[] { 70f, 70f, 70f };
 
     public void updateGoogleSheets(List<Map<Field, Object>> countries) {
         GoogleSheetsApi api = GoogleSheetsApi.INSTANCE;
-
-        // Clearing the target sheet
-        api.clearSheet(SPREADSHEET_ID, SHEET_ID);
 
         List<Request> requests = new ArrayList<>();
 
@@ -44,15 +41,33 @@ public class GoogleSheetsReport {
             throw new RuntimeException("No sheet \"" + SHEET_ID + "\" found at " + SPREADSHEET_ID);
         }
 
+        // Columns list
+        List<Field> columns = new ArrayList<>(PREDEFINED_HEADER_COLUMNS);
+        if (!countries.isEmpty()) {
+            columns.addAll(countries.get(0).keySet());
+        } else {
+            log.warn("No countries were provided");
+            return;
+        }
+
         // Header
-        Color headerColor = new Color().setBlue((float) 70).setGreen((float) 70).setRed((float) 70);
+        Color headerColor = new Color().setRed(HEADER_COLOR_RGB[0]).setGreen(HEADER_COLOR_RGB[1]).setBlue(HEADER_COLOR_RGB[2]);
         CellFormat headerFormat = new CellFormat().setBackgroundColor(headerColor).setTextFormat(new TextFormat().setBold(true)).setHorizontalAlignment("center");
         CellFormat firstColumnHeaderFormat = new CellFormat().setBackgroundColor(headerColor).setTextFormat(new TextFormat().setBold(true)).setHorizontalAlignment("left");
-        for (int i = 0; i < HEADER_COLUMNS.length; i++) {
-            Field column = HEADER_COLUMNS[i];
+
+        int columnIndex2 = 0; // Index for the sheet - it might be different from columnIndex because of predefined columns
+        for (int columnIndex = 0; columnIndex < columns.size(); columnIndex++) {
+            Field column = columns.get(columnIndex);
+
+            // Skipping all the predefined columns
+            if (columnIndex >= PREDEFINED_HEADER_COLUMNS.size()) {
+                if (PREDEFINED_HEADER_COLUMNS.contains(column)) {
+                    continue;
+                }
+            }
 
             CellData headerCellData = new CellData();
-            if (i == 0) {
+            if (columnIndex == 0) {
                 headerCellData.setUserEnteredFormat(firstColumnHeaderFormat);
             } else {
                 headerCellData.setUserEnteredFormat(headerFormat);
@@ -62,13 +77,22 @@ public class GoogleSheetsReport {
             } else {
                 headerCellData.setUserEnteredValue(new ExtendedValue().setStringValue(column.title));
             }
+            if (column.description != null && !column.description.trim().equals("")) {
+                headerCellData.setNote(column.description);
+            }
+            if (column.url != null && !column.url.trim().equals("")) {
+                // TODO (To set it, use a `=HYPERLINK` formula in the userEnteredValue.formulaValue field.)
+//                headerCellData.setHyperlink(column.url);
+//                headerCellData.setUserEnteredValue(new ExtendedValue().setFormulaValue("=" + column.url));
+            }
 
             GridRange gr = new GridRange();
             gr.setSheetId(sheet.getProperties().getSheetId());
             gr.setStartRowIndex(0);
             gr.setEndRowIndex(1);
-            gr.setStartColumnIndex(i);
-            gr.setEndColumnIndex(i + 1);
+            gr.setStartColumnIndex(columnIndex2);
+            gr.setEndColumnIndex(columnIndex2 + 1);
+            columnIndex2++;
 
             requests.add(new Request().setRepeatCell(new RepeatCellRequest()
                     .setCell(headerCellData)
@@ -83,8 +107,16 @@ public class GoogleSheetsReport {
         for (int countryIndex = 0; countryIndex < countries.size(); countryIndex++) {
             Map<Field, Object> country = countries.get(countryIndex);
 
-            for (int columnIndex = 0; columnIndex < HEADER_COLUMNS.length; columnIndex++) {
-                Field column = HEADER_COLUMNS[columnIndex];
+            columnIndex2 = 0; // Index for the sheet - it might be different from columnIndex because of predefined columns
+            for (int columnIndex = 0; columnIndex < columns.size(); columnIndex++) {
+                Field column = columns.get(columnIndex);
+
+                // Skipping all the predefined columns
+                if (columnIndex >= PREDEFINED_HEADER_COLUMNS.size()) {
+                    if (PREDEFINED_HEADER_COLUMNS.contains(column)) {
+                        continue;
+                    }
+                }
 
                 CellData headerCellData = new CellData();
                 CellFormat cellFormat = dataFormat;
@@ -93,7 +125,7 @@ public class GoogleSheetsReport {
                     case 0:
                         // Country
                         cellFormat = firstColumnDataFormat;
-                        cellData = new ExtendedValue().setStringValue(String.valueOf(country.get(Field.Name)));
+                        cellData = new ExtendedValue().setStringValue(String.valueOf(country.get(Field.Country)));
                         break;
                     case 1:
                         // City
@@ -127,8 +159,9 @@ public class GoogleSheetsReport {
                 gr.setSheetId(sheet.getProperties().getSheetId());
                 gr.setStartRowIndex(countryIndex + 1);
                 gr.setEndRowIndex(countryIndex + 2);
-                gr.setStartColumnIndex(columnIndex);
-                gr.setEndColumnIndex(columnIndex + 1);
+                gr.setStartColumnIndex(columnIndex2);
+                gr.setEndColumnIndex(columnIndex2 + 1);
+                columnIndex2++;
 
                 requests.add(new Request().setRepeatCell(new RepeatCellRequest()
                         .setCell(headerCellData)
@@ -136,6 +169,11 @@ public class GoogleSheetsReport {
                         .setFields("*")));
             }
         }
+
+        // Clearing the target sheet
+        api.clearSheet(SPREADSHEET_ID, SHEET_ID);
+
+        // Applying new data
         api.executeBatchUpdate(SPREADSHEET_ID, requests);
     }
 }

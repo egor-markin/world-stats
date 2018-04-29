@@ -1,4 +1,4 @@
-package ru.rustyskies.utils;
+package ru.rustyskies.tools;
 
 import lombok.experimental.UtilityClass;
 
