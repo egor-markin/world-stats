@@ -48,6 +48,10 @@ public class Main {
     public void main(String[] args) {
         ProxyUtils.enableSocksProxy();
 
+        // TODO !!! Format all index columns to 00.00 format
+        // TODO !!! Round GDP column' value to $mln
+        // TODO !!! Add other Numbeo indexes
+
         // Countries
         for (Country country : Country.values()) {
             Map<Field, Object> map = addCountry(country);
@@ -63,9 +67,6 @@ public class Main {
             map.put(Field.GDPpC, population != 0 ? gdp / population : 0);
 
             map.putAll(Numbeo.getData(country));
-
-            // TODO !!! Fix URL in the header
-            // TODO !!! Add all others indexes from Numbeo
         }
 
         // Cities

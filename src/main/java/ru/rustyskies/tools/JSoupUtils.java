@@ -17,12 +17,19 @@ public class JSoupUtils {
 
     // https://jsoup.org/cookbook/extracting-data/selector-syntax
 
+    private static final String QUERIES_SEPARATOR = "->";
+
     public String getField(Document document, String cssQuery) {
-        Elements elements = document.select(cssQuery);
+        String[] queries = cssQuery.split(QUERIES_SEPARATOR);
+        Elements elements = document.select(queries[0].trim());
+        for (int i = 1; i < queries.length; i++) {
+            elements = elements.select(queries[i].trim());
+        }
+
         if (elements.size() > 0) {
             return elements.get(0).text();
         } else {
-            log.warn("Nothing found on query: " + cssQuery);
+            //log.warn("Nothing found on query: " + cssQuery);
             return null;
         }
     }

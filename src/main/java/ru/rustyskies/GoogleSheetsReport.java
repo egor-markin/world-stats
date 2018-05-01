@@ -66,24 +66,30 @@ public class GoogleSheetsReport {
                 }
             }
 
+            // Format
             CellData headerCellData = new CellData();
             if (columnIndex == 0) {
                 headerCellData.setUserEnteredFormat(firstColumnHeaderFormat);
             } else {
                 headerCellData.setUserEnteredFormat(headerFormat);
             }
+
+            // Value & hyperlink
+            String value;
             if (column.unit != null && !column.unit.trim().equals("")) {
-                headerCellData.setUserEnteredValue(new ExtendedValue().setStringValue(column.title + " (" + column.unit + ")"));
+                value = column.title + " (" + column.unit + ")";
             } else {
-                headerCellData.setUserEnteredValue(new ExtendedValue().setStringValue(column.title));
-            }
-            if (column.description != null && !column.description.trim().equals("")) {
-                headerCellData.setNote(column.description);
+                value = column.title;
             }
             if (column.url != null && !column.url.trim().equals("")) {
-                // TODO (To set it, use a `=HYPERLINK` formula in the userEnteredValue.formulaValue field.)
-//                headerCellData.setHyperlink(column.url);
-//                headerCellData.setUserEnteredValue(new ExtendedValue().setFormulaValue("=" + column.url));
+                headerCellData.setUserEnteredValue(new ExtendedValue().setFormulaValue("=HYPERLINK(\"" + column.url + "\";\"" + value + "\")"));
+            } else {
+                headerCellData.setUserEnteredValue(new ExtendedValue().setStringValue(value));
+            }
+
+            // Description
+            if (column.description != null && !column.description.trim().equals("")) {
+                headerCellData.setNote(column.description);
             }
 
             GridRange gr = new GridRange();
@@ -136,20 +142,19 @@ public class GoogleSheetsReport {
                         cellData = new ExtendedValue().setStringValue("Country");
                         break;
                     default:
-                        switch (column.fieldType) {
-                            case Double:
-                                cellFormat = numberFormat;
-                                cellData = new ExtendedValue().setNumberValue((Double) country.get(column));
-                                break;
-                            case Integer:
-                                cellFormat = numberFormat;
-                                cellData = new ExtendedValue().setNumberValue(((Integer) country.get(column)).doubleValue());
-                                break;
-                            case String:
-                                cellData = new ExtendedValue().setStringValue(String.valueOf(country.get(column)));
-                                break;
-                            default:
-                                throw new RuntimeException("Unexpected field type: " + column.fieldType);
+                        Object value = country.get(column);
+                        if (value == null) {
+                            cellData = new ExtendedValue().setStringValue("");
+                        } else if (value instanceof String) {
+                            cellData = new ExtendedValue().setStringValue((String) country.get(column));
+                        } else if (value instanceof Integer) {
+                            cellFormat = numberFormat;
+                            cellData = new ExtendedValue().setNumberValue(((Integer) country.get(column)).doubleValue());
+                        } else if (value instanceof Double) {
+                            cellFormat = numberFormat;
+                            cellData = new ExtendedValue().setNumberValue((Double) country.get(column));
+                        } else {
+                            throw new RuntimeException("Unexpected field type: " + value.getClass() + " for column " + column);
                         }
                 }
                 headerCellData.setUserEnteredFormat(cellFormat);

@@ -28,7 +28,11 @@ public enum Field {
     LPP("LPP", "", FieldType.Double, "Local Purchasing Power Index - Compared to New York City", "https://www.numbeo.com/cost-of-living/cpi_explained.jsp"),
     Crime("Crime", "", FieldType.Double, "Crime Index", "https://www.numbeo.com/crime/indices_explained.jsp"),
     Safety("Safety", "", FieldType.Double, "Safety index", "https://www.numbeo.com/crime/indices_explained.jsp"),
-    HealthCare("HealthCare", "", FieldType.Double, "Health Care index", "https://www.numbeo.com/health-care/indices_explained.jsp");
+    HealthCare("HealthCare", "", FieldType.Double, "Health Care index", "https://www.numbeo.com/health-care/indices_explained.jsp"),
+    Pollution("Pollution", "", FieldType.Double, "Pollution Index", "https://www.numbeo.com/pollution/indices_explained.jsp"),
+    Traffic("Traffic", "", FieldType.Double, "Traffic Index", "https://www.numbeo.com/traffic/indices_explained.jsp"),
+    Climate("Climate", "", FieldType.Double, "Climate Index", "https://www.numbeo.com/quality-of-life/indices_explained.jsp"),
+    QoL("QoL", "", FieldType.Double, "Quality of Life Index", "https://www.numbeo.com/quality-of-life/indices_explained.jsp");
 
     public final String title;
     public final String unit;
