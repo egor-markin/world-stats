@@ -33,12 +33,12 @@ public class Numbeo {
     @AllArgsConstructor
     private enum Page {
         CoL("cost-of-living"),
-        Health("health-care"),
+        HealthCare("health-care"),
         Crime("crime"),
         Pollution("pollution"),
         Traffic("traffic"),
-        QoL("quality-of-life"),
-        Climate("climate");
+        Climate("climate"),
+        QoL("quality-of-life");
 
         String name;
     }
@@ -60,11 +60,11 @@ public class Numbeo {
             new FieldLocation(Field.LPP, Page.CoL, 5, Page.CoL),
             new FieldLocation(Field.Crime, Page.Crime,0, Page.Crime),
             new FieldLocation(Field.Safety, Page.Crime,1, Page.Crime),
-            new FieldLocation(Field.HealthCare, Page.Health,0, Page.Health),
+            new FieldLocation(Field.HealthCare, Page.HealthCare,0, Page.HealthCare),
             new FieldLocation(Field.Pollution, Page.Pollution,0, Page.Pollution),
             new FieldLocation(Field.Traffic, Page.Traffic,0, Page.Traffic),
+            new FieldLocation(Field.Climate, Page.QoL,8, Page.Climate),
             new FieldLocation(Field.QoL, Page.QoL,0, Page.QoL),
-            new FieldLocation(Field.Climate, Page.QoL,8, Page.Climate)
     };
 
     private final Map<Field, FieldLocation> fieldLocationMap = new LinkedHashMap<>();
@@ -102,7 +102,7 @@ public class Numbeo {
                 "td.cityOrCountryInIndicesTable:contains(" + country.name + ")" + StringUtils.repeat(" + td", pl.countriesRankingColumnIndex + 1));
     }
     private Double getCountryValue(Country country, FieldLocation pl) {
-        return JSoupUtils.getDoubleField(getCountryDocument(pl.countriesRankingPage, country), "table.table_indices -> tr + tr -> td + td");
+        return JSoupUtils.getDoubleField(getCountryDocument(pl.countryPage, country), "table.table_indices -> tr + tr -> td + td");
     }
 
     private Object getValue(Country country, Field field) {
@@ -127,7 +127,7 @@ public class Numbeo {
     public static void main(String[] args) {
         System.out.println(getData(Country.Latvia));
 //        System.out.println(getCountryValue(Country.Latvia, fieldLocationMap.get(Field.HealthCare)));
-//        System.out.println(JSoupUtils.getDoubleField(getCountryDocument(Page.Health, Country.Latvia), "table.table_indices -> tr + tr -> td + td"));
+//        System.out.println(JSoupUtils.getDoubleField(getCountryDocument(Page.HealthCare, Country.Latvia), "table.table_indices -> tr + tr -> td + td"));
 //        System.out.println(getValue(Country.Latvia, Field.Climate));
     }
 
