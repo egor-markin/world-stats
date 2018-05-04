@@ -107,8 +107,6 @@ public class GoogleSheetsReport {
         }
 
         // Data
-        CellFormat dataFormat = new CellFormat().setHorizontalAlignment("center");
-        CellFormat numberFormat = new CellFormat().setNumberFormat(new NumberFormat().setType("NUMBER").setPattern("#,##0")).setHorizontalAlignment("center");
         CellFormat firstColumnDataFormat = new CellFormat().setHorizontalAlignment("left");
         for (int countryIndex = 0; countryIndex < countries.size(); countryIndex++) {
             Map<Field, Object> country = countries.get(countryIndex);
@@ -124,8 +122,22 @@ public class GoogleSheetsReport {
                     }
                 }
 
+                Object value = country.get(column);
+
                 CellData headerCellData = new CellData();
-                CellFormat cellFormat = dataFormat;
+                CellFormat cellFormat;
+                if (value instanceof Integer || value instanceof Double) {
+                    NumberFormat nf = new NumberFormat().setType("NUMBER");
+                    if (column.getFieldNumberFormatPattern() != null && !column.getFieldNumberFormatPattern().trim().equals("")) {
+                        nf.setPattern(column.getFieldNumberFormatPattern());
+                    } else {
+                        nf.setPattern("#,##0");
+                    }
+                    cellFormat = new CellFormat().setNumberFormat(nf).setHorizontalAlignment("center");
+                } else {
+                    cellFormat = new CellFormat().setHorizontalAlignment("center");
+                }
+
                 ExtendedValue cellData;
                 switch (columnIndex) {
                     case 0:
@@ -142,16 +154,13 @@ public class GoogleSheetsReport {
                         cellData = new ExtendedValue().setStringValue("Country");
                         break;
                     default:
-                        Object value = country.get(column);
                         if (value == null) {
                             cellData = new ExtendedValue().setStringValue("");
                         } else if (value instanceof String) {
                             cellData = new ExtendedValue().setStringValue((String) country.get(column));
                         } else if (value instanceof Integer) {
-                            cellFormat = numberFormat;
                             cellData = new ExtendedValue().setNumberValue(((Integer) country.get(column)).doubleValue());
                         } else if (value instanceof Double) {
-                            cellFormat = numberFormat;
                             cellData = new ExtendedValue().setNumberValue((Double) country.get(column));
                         } else {
                             throw new RuntimeException("Unexpected field type: " + value.getClass() + " for column " + column);
