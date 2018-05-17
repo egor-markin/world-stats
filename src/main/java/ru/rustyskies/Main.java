@@ -72,6 +72,7 @@ public class Main {
         // TODO !!! Add cities
         // Population - https://datahub.io/core/population-city#resource-unsd-citypopulation-year-both
         // https://www.citypopulation.de/php/russia-penza.php?cityid=56701000000
+        // Datahub.getCityPopulation
 
         // Countries
         for (Country country : Country.values()) {

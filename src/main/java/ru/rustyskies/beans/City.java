@@ -1,15 +1,20 @@
 package ru.rustyskies.beans;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 @Getter
-@AllArgsConstructor
 public enum City {
 
     Singapore("Singapore", Country.Singapore),
     HongKong("Hong Kong", Country.HongKong),
-    Moscow("Moscow", Country.Russia),
+    Moscow("Moscow", Country.Russia, new String[] { "Moskva" }),
     SaintPetersburg("Saint Petersburg", Country.Russia),
     Penza("Penza", Country.Russia),
     NewYork("New York", Country.USA),
@@ -76,5 +81,26 @@ public enum City {
 
     public final String name;
     public final Country country;
+    public final Set<String> nameVariations;
 
+    City(String name, Country country) {
+        this.name = name;
+        this.country = country;
+        nameVariations = Collections.singleton(name.toLowerCase());
+    }
+
+    City(String name, Country country, String[] nameVariations) {
+        this.name = name;
+        this.country = country;
+
+        Set<String> s = new HashSet<>(Arrays.asList(nameVariations));
+        s.add(name);
+        s = s.stream().map(String::toLowerCase).collect(Collectors.toSet());
+        this.nameVariations = Collections.unmodifiableSet(s);
+    }
+
+    /** Checks if provided name matches any of current city name variations */
+    public boolean nameMatch(String name) {
+        return name != null && !name.trim().equals("") && nameVariations.contains(name.toLowerCase());
+    }
 }

@@ -3,10 +3,16 @@ package ru.rustyskies.beans;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.stream.Collectors;
+
 @Getter
 @AllArgsConstructor
 public enum Country {
-    Russia("Russia", "RU", "RUS"),
+    Russia("Russia", "RU", "RUS", new String[] { "Russian Federation" }),
     USA("United States", "US", "USA"),
     Argentina("Argentina", "AR", "ARG"),
     Germany("Germany", "DE", "DEU"),
@@ -39,7 +45,31 @@ public enum Country {
     Lithuania("Lithuania", "LT", "LTU"),
     Switzerland("Switzerland", "CH", "CHE");
 
-    public String name;
-    public String iso2Code;
-    public String alpha3Code;
+    public final String name;
+    public final String iso2Code;
+    public final String alpha3Code;
+    public final Set<String> nameVariations;
+
+    Country(String name, String iso2Code, String alpha3Code) {
+        this.name = name;
+        this.iso2Code = iso2Code;
+        this.alpha3Code = alpha3Code;
+        nameVariations = Collections.singleton(name.toLowerCase());
+    }
+
+    Country(String name, String iso2Code, String alpha3Code, String[] nameVariations) {
+        this.name = name;
+        this.iso2Code = iso2Code;
+        this.alpha3Code = alpha3Code;
+
+        Set<String> s = new HashSet<>(Arrays.asList(nameVariations));
+        s.add(name);
+        s = s.stream().map(String::toLowerCase).collect(Collectors.toSet());
+        this.nameVariations = Collections.unmodifiableSet(s);
+    }
+
+    /** Checks if provided name matches any of current city name variations */
+    public boolean nameMatch(String name) {
+        return name != null && !name.trim().equals("") && nameVariations.contains(name.toLowerCase());
+    }
 }
