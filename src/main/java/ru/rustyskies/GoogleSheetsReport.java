@@ -31,7 +31,7 @@ public class GoogleSheetsReport {
 
     private static final Float[] HEADER_COLOR_RGB = new Float[] { 70f, 70f, 70f };
 
-    public void updateGoogleSheets(List<Map<Field, Object>> countries) {
+    public void updateGoogleSheets(List<Map<Field, Object>> dataList) {
         GoogleSheetsApi api = GoogleSheetsApi.INSTANCE;
 
         List<Request> requests = new ArrayList<>();
@@ -43,10 +43,10 @@ public class GoogleSheetsReport {
 
         // Columns list
         List<Field> columns = new ArrayList<>(PREDEFINED_HEADER_COLUMNS);
-        if (!countries.isEmpty()) {
-            columns.addAll(countries.get(0).keySet());
+        if (!dataList.isEmpty()) {
+            columns.addAll(dataList.get(0).keySet());
         } else {
-            log.warn("No countries were provided");
+            log.warn("No data was provided");
             return;
         }
 
@@ -108,8 +108,8 @@ public class GoogleSheetsReport {
 
         // Data
         CellFormat firstColumnDataFormat = new CellFormat().setHorizontalAlignment("left");
-        for (int countryIndex = 0; countryIndex < countries.size(); countryIndex++) {
-            Map<Field, Object> country = countries.get(countryIndex);
+        for (int countryIndex = 0; countryIndex < dataList.size(); countryIndex++) {
+            Map<Field, Object> dataItem = dataList.get(countryIndex);
 
             columnIndex2 = 0; // Index for the sheet - it might be different from columnIndex because of predefined columns
             for (int columnIndex = 0; columnIndex < columns.size(); columnIndex++) {
@@ -122,7 +122,7 @@ public class GoogleSheetsReport {
                     }
                 }
 
-                Object value = country.get(column);
+                Object value = dataItem.get(column);
 
                 CellData headerCellData = new CellData();
                 CellFormat cellFormat;
@@ -143,25 +143,25 @@ public class GoogleSheetsReport {
                     case 0:
                         // Country
                         cellFormat = firstColumnDataFormat;
-                        cellData = new ExtendedValue().setStringValue(String.valueOf(country.get(Field.Country)));
+                        cellData = new ExtendedValue().setStringValue(String.valueOf(dataItem.get(Field.Country)));
                         break;
                     case 1:
                         // City
-                        cellData = new ExtendedValue().setStringValue("Whole Country");
+                        cellData = new ExtendedValue().setStringValue(String.valueOf(dataItem.get(Field.City)));
                         break;
                     case 2:
                         // Type
-                        cellData = new ExtendedValue().setStringValue("Country");
+                        cellData = new ExtendedValue().setStringValue(String.valueOf(dataItem.get(Field.Type)));
                         break;
                     default:
                         if (value == null) {
                             cellData = new ExtendedValue().setStringValue("");
                         } else if (value instanceof String) {
-                            cellData = new ExtendedValue().setStringValue((String) country.get(column));
+                            cellData = new ExtendedValue().setStringValue((String) dataItem.get(column));
                         } else if (value instanceof Integer) {
-                            cellData = new ExtendedValue().setNumberValue(((Integer) country.get(column)).doubleValue());
+                            cellData = new ExtendedValue().setNumberValue(((Integer) dataItem.get(column)).doubleValue());
                         } else if (value instanceof Double) {
-                            cellData = new ExtendedValue().setNumberValue((Double) country.get(column));
+                            cellData = new ExtendedValue().setNumberValue((Double) dataItem.get(column));
                         } else {
                             throw new RuntimeException("Unexpected field type: " + value.getClass() + " for column " + column);
                         }

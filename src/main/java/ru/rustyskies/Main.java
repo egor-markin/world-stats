@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import ru.rustyskies.beans.City;
 import ru.rustyskies.beans.Country;
 import ru.rustyskies.beans.Field;
+import ru.rustyskies.datasource.Datahub;
 import ru.rustyskies.datasource.Numbeo;
 import ru.rustyskies.datasource.RestCountriesEU;
 import ru.rustyskies.datasource.Worldbank;
@@ -48,31 +49,30 @@ public class Main {
     // TODO Run project on a public server
     // TODO Add XLSX output
 
-    private final List<Map<Field, Object>> cities = new ArrayList<>();
-    private final List<Map<Field, Object>> countries = new ArrayList<>();
+    private final List<Map<Field, Object>> dataList = new ArrayList<>();
 
     private Map<Field, Object> addCity(City city) {
         Map<Field, Object> map = new LinkedHashMap<>();
-        map.put(Field.City, city.getName());
         map.put(Field.Country, city.getCountry().getName());
-        cities.add(map);
+        map.put(Field.City, city.getName());
+        map.put(Field.Type, "City");
+        dataList.add(map);
         return map;
     }
 
     private Map<Field, Object> addCountry(Country country) {
         Map<Field, Object> map = new LinkedHashMap<>();
         map.put(Field.Country, country.getName());
-        countries.add(map);
+        map.put(Field.City, "Whole Country");
+        map.put(Field.Type, "Country");
+        dataList.add(map);
         return map;
     }
 
     public void main(String[] args) {
         ProxyUtils.enableSocksProxy();
 
-        // TODO !!! Add cities
-        // Population - https://datahub.io/core/population-city#resource-unsd-citypopulation-year-both
-        // https://www.citypopulation.de/php/russia-penza.php?cityid=56701000000
-        // Datahub.getCityPopulation
+        // TODO Remove PREDEFINED_HEADER_COLUMNS in GoogleSheetsReport
 
         // Countries
         for (Country country : Country.values()) {
@@ -90,21 +90,14 @@ public class Main {
 
             map.putAll(Numbeo.getData(country));
         }
-        GoogleSheetsReport.updateGoogleSheets(countries);
 
         // Cities
-        Map<Field, Object> moscow = addCity(City.Moscow);
-//        moscow.put(Field.Population, moscowInfobox.get(Field.CityPopulation));
-//        moscow.put(Field.Area, moscowInfobox.get(Field.Area));
-//        moscow.put(Field.GDP, WikipediaPageParser.getCityGdp(City.Moscow));
-        GoogleSheetsReport.updateGoogleSheets(cities);
+        for (City city : City.values()) {
+            Map<Field, Object> map = addCity(city);
+            map.put(Field.Population, Datahub.getCityPopulation(city));
+        }
 
-//        for (City city : City.values()) {
-//        Map<Field, Object> moscow = addCity(City.Moscow);
-//        Map<Field, Object> moscowInfobox = WikipediaInfoboxParser.parseInfobox(City.Moscow);
-//        System.out.println(moscow);
-//        }
-
+        GoogleSheetsReport.updateGoogleSheets(dataList);
     }
 
 
