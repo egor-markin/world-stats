@@ -5,10 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import ru.rustyskies.beans.City;
 import ru.rustyskies.beans.Country;
 import ru.rustyskies.beans.Field;
-import ru.rustyskies.datasource.Datahub;
-import ru.rustyskies.datasource.Numbeo;
-import ru.rustyskies.datasource.RestCountriesEU;
-import ru.rustyskies.datasource.Worldbank;
+import ru.rustyskies.datasource.*;
 import ru.rustyskies.tools.ProxyUtils;
 
 import java.util.ArrayList;
@@ -72,7 +69,7 @@ public class Main {
     public void main(String[] args) {
         ProxyUtils.enableSocksProxy();
 
-        // TODO Remove PREDEFINED_HEADER_COLUMNS in GoogleSheetsReport
+        // TODO !!! Wikipedia datasource !!!
 
         // Countries
         for (Country country : Country.values()) {
@@ -95,6 +92,7 @@ public class Main {
         for (City city : City.values()) {
             Map<Field, Object> map = addCity(city);
             map.put(Field.Population, Datahub.getCityPopulation(city));
+            map.putAll(Wikipedia.getCity(city));
         }
 
         GoogleSheetsReport.updateGoogleSheets(dataList);

@@ -126,7 +126,9 @@ public class GoogleSheetsReport {
 
                 CellData headerCellData = new CellData();
                 CellFormat cellFormat;
-                if (value instanceof Integer || value instanceof Double) {
+                if (columnIndex == 0) {
+                    cellFormat = firstColumnDataFormat;
+                } else if (value instanceof Integer || value instanceof Double) {
                     NumberFormat nf = new NumberFormat().setType("NUMBER");
                     if (column.getFieldNumberFormatPattern() != null && !column.getFieldNumberFormatPattern().trim().equals("")) {
                         nf.setPattern(column.getFieldNumberFormatPattern());
@@ -137,36 +139,20 @@ public class GoogleSheetsReport {
                 } else {
                     cellFormat = new CellFormat().setHorizontalAlignment("center");
                 }
+                headerCellData.setUserEnteredFormat(cellFormat);
 
                 ExtendedValue cellData;
-                switch (columnIndex) {
-                    case 0:
-                        // Country
-                        cellFormat = firstColumnDataFormat;
-                        cellData = new ExtendedValue().setStringValue(String.valueOf(dataItem.get(Field.Country)));
-                        break;
-                    case 1:
-                        // City
-                        cellData = new ExtendedValue().setStringValue(String.valueOf(dataItem.get(Field.City)));
-                        break;
-                    case 2:
-                        // Type
-                        cellData = new ExtendedValue().setStringValue(String.valueOf(dataItem.get(Field.Type)));
-                        break;
-                    default:
-                        if (value == null) {
-                            cellData = new ExtendedValue().setStringValue("");
-                        } else if (value instanceof String) {
-                            cellData = new ExtendedValue().setStringValue((String) dataItem.get(column));
-                        } else if (value instanceof Integer) {
-                            cellData = new ExtendedValue().setNumberValue(((Integer) dataItem.get(column)).doubleValue());
-                        } else if (value instanceof Double) {
-                            cellData = new ExtendedValue().setNumberValue((Double) dataItem.get(column));
-                        } else {
-                            throw new RuntimeException("Unexpected field type: " + value.getClass() + " for column " + column);
-                        }
+                if (value == null) {
+                    cellData = new ExtendedValue().setStringValue("");
+                } else if (value instanceof String) {
+                    cellData = new ExtendedValue().setStringValue((String) dataItem.get(column));
+                } else if (value instanceof Integer) {
+                    cellData = new ExtendedValue().setNumberValue(((Integer) dataItem.get(column)).doubleValue());
+                } else if (value instanceof Double) {
+                    cellData = new ExtendedValue().setNumberValue((Double) dataItem.get(column));
+                } else {
+                    throw new RuntimeException("Unexpected field type: " + value.getClass() + " for column " + column);
                 }
-                headerCellData.setUserEnteredFormat(cellFormat);
                 headerCellData.setUserEnteredValue(cellData);
 
                 GridRange gr = new GridRange();
