@@ -4,7 +4,7 @@ import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
 import ru.rustyskies.beans.City;
 import ru.rustyskies.beans.Field;
-import ru.rustyskies.tools.WikipediaInfoboxParser;
+import ru.rustyskies.tools.WikipediaWikitextParser;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -25,6 +25,7 @@ public class Wikipedia {
         // Moscow
         fieldsMap = new HashMap<>();
         citiesFieldsMap.put(City.Moscow, fieldsMap);
+        fieldsMap.put(Field.LocalName, "ru_name");
         fieldsMap.put(Field.Area, "area_km2");
         fieldsMap.put(Field.CityPopulation, "pop_2010census");
 
@@ -46,7 +47,7 @@ public class Wikipedia {
             log.warn("No fields mapping for the city found: " + city);
             return new HashMap<>();
         }
-        return WikipediaInfoboxParser.parseInfobox(city, citiesFieldsMap.get(city));
+        return WikipediaWikitextParser.parseInfobox(city, citiesFieldsMap.get(city));
     }
 
     public static void main(String[] args) {

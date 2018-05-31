@@ -4,7 +4,6 @@ import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import ru.rustyskies.beans.City;
 import ru.rustyskies.beans.Field;
 
 import java.io.IOException;
@@ -13,7 +12,7 @@ import java.util.Map;
 
 @Slf4j
 @UtilityClass
-public class WikipediaPageParser {
+public class WikipediaHtmlParser {
 
     private String extractTableRow(String wikitext, String firstColumnText) {
         if (wikitext == null || wikitext.trim().equals("")) {
@@ -35,11 +34,11 @@ public class WikipediaPageParser {
         return wikitext.substring(startPos + rowStartText.length(), endPos);
     }
 
-    public Integer getCityGdp(City city) {
-        String row = extractTableRow(WikipediaUtils.getWikiPageXml("List_of_cities_by_GDP"), "[[" + city.name + "]]");
-        String cell = WikipediaUtils.getGroup(row, 0, "|", 4);
-        return ParseUtils.parseInt(cell);
-    }
+//    public Integer getCityGdp(City city) {
+//        String row = extractTableRow(WikipediaUtils.getWikiPageXml("List_of_cities_by_GDP"), "[[" + city.name + "]]");
+//        String cell = WikipediaUtils.getBlock(row, 0, "|", 4);
+//        return ParseUtils.parseInt(cell);
+//    }
 
     public Map<Field, Object> parseCity(String url) {
         Map<Field, Object> cityMap = new HashMap<>();
@@ -59,7 +58,7 @@ public class WikipediaPageParser {
     }
 
     public void main(String args[]) {
-        System.out.println(getCityGdp(City.Berlin));
+//        System.out.println(getCityGdp(City.Berlin));
 //        System.out.println(getDoubleFromString("891.7 km2 (344.3 sq mi)"));
         System.out.println(parseCity("https://en.wikipedia.org/wiki/Berlin"));
     }
