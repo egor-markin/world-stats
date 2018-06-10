@@ -22,6 +22,16 @@ public class Wikipedia {
     static {
         Map<Field, String> fieldsMap;
 
+        // Singapore
+        fieldsMap = new HashMap<>();
+        citiesFieldsMap.put(City.Singapore, fieldsMap);
+        fieldsMap.put(Field.Area, "area_km2");
+        fieldsMap.put(Field.CityPopulation, "population_estimate");
+        fieldsMap.put(Field.GDPPPP, "GDP_PPP");
+        fieldsMap.put(Field.GDPPPPpC, "GDP_PPP_per_capita");
+        fieldsMap.put(Field.GDP, "GDP_nominal");
+        fieldsMap.put(Field.GDPpC, "GDP_nominal_per_capita");
+
         // Moscow
         fieldsMap = new HashMap<>();
         citiesFieldsMap.put(City.Moscow, fieldsMap);
@@ -47,10 +57,11 @@ public class Wikipedia {
             log.warn("No fields mapping for the city found: " + city);
             return new HashMap<>();
         }
-        return WikipediaWikitextParser.parseInfobox(city, citiesFieldsMap.get(city));
+        return WikipediaWikitextParser.getCityInfobox(city, citiesFieldsMap.get(city));
     }
 
     public static void main(String[] args) {
-        System.out.println(getCity(City.Oslo));
+        System.out.println(getCity(City.Singapore));
+        WikipediaWikitextParser.printCityInfobox(City.Singapore);
     }
 }

@@ -2,6 +2,6 @@ package ru.rustyskies.beans;
 
 public enum FieldType {
 
-    String, Integer, Double
+    String, Integer, Double, Currency
 
 }
