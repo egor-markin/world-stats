@@ -31,6 +31,9 @@ public class Wikipedia {
         fieldsMap.put(Field.GDPPPPpC, "GDP_PPP_per_capita");
         fieldsMap.put(Field.GDP, "GDP_nominal");
         fieldsMap.put(Field.GDPpC, "GDP_nominal_per_capita");
+        fieldsMap.put(Field.Gini, "Gini");
+        fieldsMap.put(Field.HDI, "HDI");
+        fieldsMap.put(Field.TimeZone, "utc_offset");
 
         // Moscow
         fieldsMap = new HashMap<>();
@@ -38,6 +41,7 @@ public class Wikipedia {
         fieldsMap.put(Field.LocalName, "ru_name");
         fieldsMap.put(Field.Area, "area_km2");
         fieldsMap.put(Field.CityPopulation, "pop_2010census");
+        fieldsMap.put(Field.Coords, "coordinates");
 
         // Berlin
         fieldsMap = new HashMap<>();
@@ -48,6 +52,7 @@ public class Wikipedia {
         fieldsMap.put(Field.MetroPopulation, "pop_metro");
         fieldsMap.put(Field.GDP, "GDP");
         fieldsMap.put(Field.GDPpC, "GDP_per_capita");
+        fieldsMap.put(Field.Coords, "coordinates");
 
         // TODO !!! Add all the cities !!!
     }
@@ -61,7 +66,9 @@ public class Wikipedia {
     }
 
     public static void main(String[] args) {
-        System.out.println(getCity(City.Singapore));
-        WikipediaWikitextParser.printCityInfobox(City.Singapore);
+        // TODO !!! Coords field doesn't work for Moscow!!!
+        City city = City.Moscow;
+        System.out.println(getCity(city));
+        WikipediaWikitextParser.printCityInfobox(city);
     }
 }

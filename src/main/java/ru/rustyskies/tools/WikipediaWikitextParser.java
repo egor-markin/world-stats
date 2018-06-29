@@ -8,8 +8,6 @@ import ru.rustyskies.beans.Field;
 
 import java.io.IOException;
 import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 @Slf4j
 @UtilityClass
@@ -144,7 +142,10 @@ public class WikipediaWikitextParser {
                     value = ParseUtils.parseDouble(valueStr);
                     break;
                 case Currency:
-                    value = ParseUtils.parseUsd(valueStr);
+                    value = ParseUtils.parseCurrency(valueStr, "\\$");
+                    break;
+                case Coordinates:
+                    value = ParseUtils.parseCoords(valueStr);
                     break;
                 default:
                     throw new RuntimeException("Unexpected field type: " + field.fieldType);

@@ -19,7 +19,7 @@ public enum Field {
     Area("Area", "km²", FieldType.Double, null, "", ""),
     Elevation("Elevation", "m", FieldType.Integer, null, "", ""),
     GDP("GDP", "$USD", FieldType.Currency, null, "Nominal Gross Domestic Product", ""),
-    GDPPPP("GDP PPP", "$USD", FieldType.Currency, null, "Gross Domestic Product at Purchasing Power Parity", ""),
+    GDPPPP("GDPPPP", "$USD", FieldType.Currency, null, "Gross Domestic Product at Purchasing Power Parity", ""),
     GDPpC("GDPpC", "$USD", FieldType.Currency, null, "Nominal Gross Domestic Product per Capita", ""),
     GDPPPPpC("GDPPPPpC", "$USD", FieldType.Currency, null, "Gross Domestic Product at Purchasing Power Parity per Capita", ""),
     CoL("CoL", "", FieldType.Double, "#,##0.00", "Cost of Living (excluding Rent) Index - Compared to New York City", "https://www.numbeo.com/cost-of-living/cpi_explained.jsp"),
@@ -34,7 +34,12 @@ public enum Field {
     Pollution("Pollution", "", FieldType.Double, "#,##0.00", "Pollution Index", "https://www.numbeo.com/pollution/indices_explained.jsp"),
     Traffic("Traffic", "", FieldType.Double, "#,##0.00", "Traffic Index", "https://www.numbeo.com/traffic/indices_explained.jsp"),
     Climate("Climate", "", FieldType.Double, "#,##0.00", "Climate Index", "https://www.numbeo.com/climate/indices_explained.jsp"),
-    QoL("QoL", "", FieldType.Double, "#,##0.00", "Quality of Life Index", "https://www.numbeo.com/quality-of-life/indices_explained.jsp");
+    QoL("QoL", "", FieldType.Double, "#,##0.00", "Quality of Life Index", "https://www.numbeo.com/quality-of-life/indices_explained.jsp"),
+    Gini("Gini", "", FieldType.Double, null, "Gini coefficient - measurement of nation's residents inequality", "https://en.wikipedia.org/wiki/Gini_coefficient"),
+    HDI("HDI", "", FieldType.Double, null, "Human Development Index - composite statistic index of life expectancy, education, and per capita income indicators", "https://en.wikipedia.org/wiki/Human_Development_Index"),
+    TimeZone("TimeZone", "", FieldType.String, null, "", "https://en.wikipedia.org/wiki/Time_zone"),
+    Coords("Coordinates", "", FieldType.Coordinates, null, "GPS Coordinates", "https://en.wikipedia.org/wiki/Geographic_coordinate_system");
+
 
     public final String title;
     public final String unit;

@@ -76,7 +76,7 @@ public enum GoogleSheetsApi {
         // Load client secrets.
         InputStream inputStream = getClass().getResourceAsStream(OAUTH_SECRET_FILE);
         if (inputStream == null) {
-            throw new RuntimeException("Unable to locate OAuth Secret file (" + OAUTH_SECRET_FILE + ") in project's resources. Fix the path or create a new file: https://developers.google.com/SHEETS/api/quickstart/java");
+            throw new RuntimeException("Unable to locate OAuth Secret file (" + OAUTH_SECRET_FILE + ") in project's resources. Fix the path or create a new file: https://developers.google.com/sheets/api/quickstart/java");
         }
         GoogleClientSecrets clientSecrets = GoogleClientSecrets.load(JSON_FACTORY, new InputStreamReader(inputStream));
 
