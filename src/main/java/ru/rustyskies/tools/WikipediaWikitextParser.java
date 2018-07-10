@@ -103,7 +103,8 @@ public class WikipediaWikitextParser {
     }
 
     private Map<String, String> getCityInfobox(City city) {
-        String xml = getWikiPageXml(city.name);
+        String articleName = city.wikipediaArticleName != null ? city.wikipediaArticleName : city.name;
+        String xml = getWikiPageXml(articleName);
         int startPos = xml.indexOf(INFOBOX_PREFIX);
         if (startPos == -1) {
             log.warn("There is no InfoBox in the provided wikitext: " + xml);
@@ -136,20 +137,29 @@ public class WikipediaWikitextParser {
                     value = valueStr;
                     break;
                 case Integer:
-                    value = ParseUtils.parseInt(valueStr);
+                    value = ParseUtils.extractInt(valueStr);
                     break;
                 case Double:
-                    value = ParseUtils.parseDouble(valueStr);
+                    value = ParseUtils.extractDouble(valueStr);
                     break;
                 case Currency:
-                    value = ParseUtils.parseCurrency(valueStr, "\\$");
+                    value = ParseUtils.extractCurrency(valueStr, "\\$", field.defaultSuffix);
                     break;
                 case Coordinates:
-                    value = ParseUtils.parseCoords(valueStr);
+                    value = ParseUtils.extractCoords(valueStr);
                     break;
                 default:
                     throw new RuntimeException("Unexpected field type: " + field.fieldType);
             }
+
+            // Units conversion
+            if (value instanceof Double) {
+                if (cityMapFieldName.endsWith("sq_mi")) {
+                    // Square miles -> square km
+                    value = (Double) value * 2.589992401021166d;
+                }
+            }
+
             resultMap.put(field, value);
         }
         return resultMap;

@@ -37,7 +37,7 @@ public class WikipediaHtmlParser {
 //    public Integer getCityGdp(City city) {
 //        String row = extractTableRow(WikipediaUtils.getWikiPageXml("List_of_cities_by_GDP"), "[[" + city.name + "]]");
 //        String cell = WikipediaUtils.getBlock(row, 0, "|", 4);
-//        return ParseUtils.parseInt(cell);
+//        return ParseUtils.extractInt(cell);
 //    }
 
     public Map<Field, Object> parseCity(String url) {

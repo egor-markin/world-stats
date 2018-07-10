@@ -17,7 +17,7 @@ public enum City {
     Moscow("Moscow", Country.Russia, new String[] { "Moskva" }),
     SaintPetersburg("Saint Petersburg", Country.Russia, new String[] { "St. Petersburg" }),
     Penza("Penza", Country.Russia),
-    NewYork("New York", Country.USA, new String[] { "New York (NY)" }),
+    NewYork("New York", Country.USA, "New_York_City", new String[] { "New York (NY)" }),
     LosAngeles("Los Angeles", Country.USA, new String[] { "Los Angeles (CA)" }),
     Chicago("Chicago", Country.USA, new String[] { "Chicago (IL)" }),
     Houston("Houston", Country.USA, new String[] { "Houston (TX)" }),
@@ -80,22 +80,30 @@ public enum City {
 
     public final String name;
     public final Country country;
+    public final String wikipediaArticleName;
     public final Set<String> nameVariations;
 
-    City(String name, Country country) {
+    City(String name, Country country, String wikipediaArticleName, String[] nameVariations) {
         this.name = name;
         this.country = country;
-        nameVariations = Collections.singleton(name.toLowerCase());
-    }
-
-    City(String name, Country country, String[] nameVariations) {
-        this.name = name;
-        this.country = country;
+        this.wikipediaArticleName = wikipediaArticleName;
 
         Set<String> s = new HashSet<>(Arrays.asList(nameVariations));
         s.add(name);
         s = s.stream().map(String::toLowerCase).collect(Collectors.toSet());
         this.nameVariations = Collections.unmodifiableSet(s);
+    }
+
+    City(String name, Country country) {
+        this(name, country, null, new String[] { name.toLowerCase() });
+    }
+
+    City(String name, Country country, String wikipediaArticleName) {
+        this(name, country, wikipediaArticleName, new String[] { name.toLowerCase() });
+    }
+
+    City(String name, Country country, String[] nameVariations) {
+        this(name, country, null, nameVariations);
     }
 
     /** Checks if provided name matches any of current city name variations */

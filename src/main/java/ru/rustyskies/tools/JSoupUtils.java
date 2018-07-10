@@ -2,14 +2,8 @@ package ru.rustyskies.tools;
 
 import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
-import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
-import ru.rustyskies.beans.Field;
-
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 
 @UtilityClass
 @Slf4j
@@ -35,10 +29,10 @@ public class JSoupUtils {
     }
 
     public Double getDoubleField(Document document, String cssQuery) {
-        return ParseUtils.parseDouble(getField(document, cssQuery));
+        return ParseUtils.extractDouble(getField(document, cssQuery));
     }
 
     public Integer getIntegerField(Document document, String cssQuery) {
-        return ParseUtils.parseInt(getField(document, cssQuery));
+        return ParseUtils.extractInt(getField(document, cssQuery));
     }
 }

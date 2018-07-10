@@ -12,7 +12,6 @@ import ru.rustyskies.tools.HttpUtils;
 import ru.rustyskies.tools.ParseUtils;
 
 import java.io.IOException;
-import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -55,7 +54,7 @@ public class Datahub {
                 String cityName = record.get(4);
 
                 if (city.nameMatch(cityName) && city.getCountry().nameMatch(countryName)) {
-                    result.set(ParseUtils.parseInt(record.get(9)));
+                    result.set(ParseUtils.extractInt(record.get(9)));
                     break;
                 }
             }

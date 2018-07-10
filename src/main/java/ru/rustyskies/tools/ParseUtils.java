@@ -31,7 +31,7 @@ public class ParseUtils {
         suffixes.put("billion", BigDecimal.valueOf(1000000000));
     }
 
-    public Integer parseInt(String str) {
+    public Integer extractInt(String str) {
         if (str == null || str.trim().equals("")) {
             return null;
         }
@@ -43,7 +43,21 @@ public class ParseUtils {
         }
     }
 
-    public Double parseDouble(String str) {
+    public int parseInt(String str) {
+        if (str == null || str.trim().equals("")) {
+            return 0;
+        }
+        return Integer.parseInt(str);
+    }
+
+    public double parseDouble(String str) {
+        if (str == null || str.trim().equals("")) {
+            return 0;
+        }
+        return Double.parseDouble(str);
+    }
+
+    public Double extractDouble(String str) {
         if (str == null || str.trim().equals("")) {
             return null;
         }
@@ -55,7 +69,7 @@ public class ParseUtils {
         }
     }
 
-    public BigDecimal parseCurrency(String str, String prefix) {
+    public BigDecimal extractCurrency(String str, String prefix, String defaultSuffix) {
         if (str == null || str.trim().equals("")) {
             return null;
         }
@@ -87,6 +101,10 @@ public class ParseUtils {
                 } else {
                     log.warn("Unknown suffix: " + suffix);
                 }
+            } else {
+                if (defaultSuffix != null) {
+                    result = result.multiply(suffixes.get(defaultSuffix));
+                }
             }
             return result;
         } else {
@@ -94,18 +112,17 @@ public class ParseUtils {
         }
     }
 
-    public String parseCoords(String str) {
-        // TODO !!! From here !!!
+    public String extractCoords(String str) {
         // Based on https://stackoverflow.com/questions/8263959/how-to-convert-between-degrees-minutes-seconds-to-decimal-coordinates
-        String regexCoords = "(\\d+)\\|(\\d+)\\|(\\d+)\\|([NS])\\|(\\d+)\\|(\\d+)\\|(\\d+)\\|([EW])";
+        String regexCoords = "([0-9.]+)[|]?(\\d*)[|]?(\\d*)\\|([NS])\\|([0-9.]+)[|]?(\\d*)[|]?(\\d*)\\|([EW])";
         Matcher m = Pattern.compile(regexCoords).matcher(str);
         if (m.find()) {
             if (m.groupCount() >= 8) {
-                double dd1 = Integer.parseInt(m.group(1)) + Integer.parseInt(m.group(2)) / 60.0 + Integer.parseInt(m.group(3)) / 3600.0;
+                double dd1 = parseDouble(m.group(1)) + parseInt(m.group(2)) / 60.0 + parseInt(m.group(3)) / 3600.0;
                 if (m.group(4).equals("S")) {
                     dd1 *= -1;
                 }
-                double dd2 = Integer.parseInt(m.group(5)) + Integer.parseInt(m.group(6)) / 60.0 + Integer.parseInt(m.group(7)) / 3600.0;
+                double dd2 = parseDouble(m.group(5)) + parseInt(m.group(6)) / 60.0 + parseInt(m.group(7)) / 3600.0;
                 if (m.group(8).equals("W")) {
                     dd2 *= -1;
                 }
@@ -116,7 +133,7 @@ public class ParseUtils {
         return null;
     }
 
-    /** For debuging purpurses */
+    /** For debuging purpurse */
     private void printGroups(Matcher m) {
         StringBuilder b = new StringBuilder();
         for (int i = 0; i <= m.groupCount(); i++) {
@@ -129,10 +146,12 @@ public class ParseUtils {
 //        String s = "1234 dfdf ($554.855 billion)&lt;ref name=imf&gt;";
 //        String s = "1234 dfdf (554.855 billion)&lt;ref name=imf&gt;";
 //        String s = "ddd";
-//        System.out.println("Result: " + parseCurrency(s, "\\$"));
-//        System.out.println(parseCurrency("ddd$33,123.33gbg"));
-//        System.out.println("Result: " + parseCurrency("554855"));
-//        System.out.println(parseCoords("{{coord|52|31|00|N|13|23|20|E|format=dms|display=inline,title}}"));
-        System.out.println(parseCoords("{{coord|55|45|N|37|37|E|type:adm1st_region:RU|display=inline,title}}"));
+//        System.out.println("Result: " + extractCurrency(s, "\\$"));
+//        System.out.println(extractCurrency("ddd$33,123.33gbg"));
+//        System.out.println("Result: " + extractCurrency("554855"));
+//        System.out.println(extractCoords("{{coord|52|31|00|N|13|23|20|E|format=dms|display=inline,title}}"));
+//        System.out.println(extractCoords("{{coord|55|45|N|37|37|E|type:adm1st_region:RU|display=inline,title}}"));
+//        System.out.println(extractCoords("{{coord|55|N|37|E|type:adm1st_region:RU|display=inline,title}}"));
+//        System.out.println(extractCoords("{{coord|40.7127|N|74.0059|W|region:US-NY|format=dms|display=inline,title}}"));
     }
 }

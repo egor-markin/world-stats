@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import ru.rustyskies.beans.Field;
 import ru.rustyskies.tools.GoogleSheetsApi;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -150,6 +151,8 @@ public class GoogleSheetsReport {
                     cellData = new ExtendedValue().setNumberValue(((Integer) dataItem.get(column)).doubleValue());
                 } else if (value instanceof Double) {
                     cellData = new ExtendedValue().setNumberValue((Double) dataItem.get(column));
+                } else if (value instanceof BigDecimal) {
+                    cellData = new ExtendedValue().setNumberValue(((BigDecimal) dataItem.get(column)).doubleValue());
                 } else {
                     throw new RuntimeException("Unexpected field type: " + value.getClass() + " for column " + column);
                 }

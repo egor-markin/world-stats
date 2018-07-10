@@ -35,6 +35,19 @@ public class Wikipedia {
         fieldsMap.put(Field.HDI, "HDI");
         fieldsMap.put(Field.TimeZone, "utc_offset");
 
+        // Hong Kong
+        fieldsMap = new HashMap<>();
+        citiesFieldsMap.put(City.HongKong, fieldsMap);
+        fieldsMap.put(Field.Area, "area_km2");
+        fieldsMap.put(Field.CityPopulation, "population_estimate");
+        fieldsMap.put(Field.GDPPPP, "GDP_PPP");
+        fieldsMap.put(Field.GDPPPPpC, "GDP_PPP_per_capita");
+        fieldsMap.put(Field.GDP, "GDP_nominal");
+        fieldsMap.put(Field.GDPpC, "GDP_nominal_per_capita");
+        fieldsMap.put(Field.Gini, "Gini");
+        fieldsMap.put(Field.HDI, "HDI");
+        fieldsMap.put(Field.TimeZone, "utc_offset");
+
         // Moscow
         fieldsMap = new HashMap<>();
         citiesFieldsMap.put(City.Moscow, fieldsMap);
@@ -42,6 +55,30 @@ public class Wikipedia {
         fieldsMap.put(Field.Area, "area_km2");
         fieldsMap.put(Field.CityPopulation, "pop_2010census");
         fieldsMap.put(Field.Coords, "coordinates");
+
+        // Saint Petersburg
+        fieldsMap = new HashMap<>();
+        citiesFieldsMap.put(City.SaintPetersburg, fieldsMap);
+        fieldsMap.put(Field.LocalName, "ru_name");
+        fieldsMap.put(Field.Coords, "coordinates");
+        fieldsMap.put(Field.CityPopulation, "pop_latest");
+        fieldsMap.put(Field.Area, "area_km2");
+
+        // Penza
+        fieldsMap = new HashMap<>();
+        citiesFieldsMap.put(City.Penza, fieldsMap);
+        fieldsMap.put(Field.LocalName, "ru_name");
+        fieldsMap.put(Field.Coords, "coordinates");
+        fieldsMap.put(Field.CityPopulation, "pop_latest");
+
+        // New York
+        fieldsMap = new HashMap<>();
+        citiesFieldsMap.put(City.NewYork, fieldsMap);
+        fieldsMap.put(Field.Coords, "coordinates");
+        fieldsMap.put(Field.Area, "area_metro_sq_mi");
+        fieldsMap.put(Field.Elevation, "elevation_m");
+        fieldsMap.put(Field.CityPopulation, "population_est");
+        fieldsMap.put(Field.TimeZone, "utc_offset1");
 
         // Berlin
         fieldsMap = new HashMap<>();
@@ -66,8 +103,7 @@ public class Wikipedia {
     }
 
     public static void main(String[] args) {
-        // TODO !!! Coords field doesn't work for Moscow!!!
-        City city = City.Moscow;
+        City city = City.NewYork;
         System.out.println(getCity(city));
         WikipediaWikitextParser.printCityInfobox(city);
     }
