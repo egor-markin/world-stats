@@ -17,7 +17,7 @@ public enum Field {
     MetroPopulation("Metro area population", "", FieldType.Integer, null, null, "", ""),
     PopulationDensity("Density", "/km²", FieldType.Double, null, null, "", ""),
     Area("Area", "km²", FieldType.Double, null, null, "", ""),
-    Elevation("Elevation", "m", FieldType.Integer, null, null, "", ""),
+    Elevation("Elevation", "m", FieldType.Double, null, null, "", ""),
     GDP("GDP", "$USD", FieldType.Currency, "billion", null, "Nominal Gross Domestic Product", ""),
     GDPPPP("GDPPPP", "$USD", FieldType.Currency, null, null, "Gross Domestic Product at Purchasing Power Parity", ""),
     GDPpC("GDPpC", "$USD", FieldType.Currency, null, null, "Nominal Gross Domestic Product per Capita", ""),

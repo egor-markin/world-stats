@@ -80,6 +80,88 @@ public class Wikipedia {
         fieldsMap.put(Field.CityPopulation, "population_est");
         fieldsMap.put(Field.TimeZone, "utc_offset1");
 
+        // Los Angeles
+        fieldsMap = new HashMap<>();
+        citiesFieldsMap.put(City.LosAngeles, fieldsMap);
+        fieldsMap.put(Field.Coords, "coordinates");
+        fieldsMap.put(Field.Area, "area_total_km2");
+        fieldsMap.put(Field.Elevation, "elevation_m");
+        fieldsMap.put(Field.CityPopulation, "population_est");
+        fieldsMap.put(Field.TimeZone, "utc_offset");
+
+        // Chicago
+        fieldsMap = new HashMap<>();
+        citiesFieldsMap.put(City.Chicago, fieldsMap);
+        fieldsMap.put(Field.Coords, "coordinates");
+        fieldsMap.put(Field.Area, "area_total_km2");
+        fieldsMap.put(Field.Elevation, "elevation_ft");
+        fieldsMap.put(Field.CityPopulation, "population_est");
+        fieldsMap.put(Field.TimeZone, "utc_offset");
+
+        // Houston
+        fieldsMap = new HashMap<>();
+        citiesFieldsMap.put(City.Houston, fieldsMap);
+        fieldsMap.put(Field.Coords, "coordinates");
+        fieldsMap.put(Field.Area, "area_total_km2");
+        fieldsMap.put(Field.Elevation, "elevation_ft");
+        fieldsMap.put(Field.CityPopulation, "population_est");
+        fieldsMap.put(Field.TimeZone, "utc_offset");
+
+        // Philadelphia
+        fieldsMap = new HashMap<>();
+        citiesFieldsMap.put(City.Philadelphia, fieldsMap);
+        fieldsMap.put(Field.Coords, "coordinates");
+        fieldsMap.put(Field.Area, "area_total_km2");
+        fieldsMap.put(Field.Elevation, "elevation_m");
+        fieldsMap.put(Field.CityPopulation, "population_total");
+        fieldsMap.put(Field.TimeZone, "utc_offset");
+
+        // Dallas
+        fieldsMap = new HashMap<>();
+        citiesFieldsMap.put(City.Dallas, fieldsMap);
+        fieldsMap.put(Field.Coords, "coordinates");
+        fieldsMap.put(Field.Area, "area_total_km2");
+        fieldsMap.put(Field.Elevation, "elevation_m");
+        fieldsMap.put(Field.CityPopulation, "population_est");
+        fieldsMap.put(Field.TimeZone, "utc_offset");
+
+        // Phoenix
+        fieldsMap = new HashMap<>();
+        citiesFieldsMap.put(City.Phoenix, fieldsMap);
+        fieldsMap.put(Field.Coords, "coordinates");
+        fieldsMap.put(Field.Area, "area_total_km2");
+        fieldsMap.put(Field.Elevation, "elevation_m");
+        fieldsMap.put(Field.CityPopulation, "population_est");
+        fieldsMap.put(Field.TimeZone, "utc_offset");
+
+        // Buenos Aires
+        fieldsMap = new HashMap<>();
+        citiesFieldsMap.put(City.BuenosAires, fieldsMap);
+        fieldsMap.put(Field.Coords, "coordinates");
+        fieldsMap.put(Field.Area, "area_total_km2");
+        fieldsMap.put(Field.Elevation, "elevation_m");
+        fieldsMap.put(Field.CityPopulation, "population_urban");
+        fieldsMap.put(Field.TimeZone, "utc_offset1");
+
+        // Cordoba
+        fieldsMap = new HashMap<>();
+        citiesFieldsMap.put(City.Cordoba, fieldsMap);
+        fieldsMap.put(Field.LocalName, "name");
+        fieldsMap.put(Field.Coords, "coordinates");
+        fieldsMap.put(Field.Area, "area_land_km2");
+        fieldsMap.put(Field.Elevation, "elevation_m");
+        fieldsMap.put(Field.CityPopulation, "population_urban");
+        fieldsMap.put(Field.TimeZone, "utc_offset1");
+
+        // Rosario
+        fieldsMap = new HashMap<>();
+        citiesFieldsMap.put(City.Rosario, fieldsMap);
+        fieldsMap.put(Field.Coords, "coordinates");
+        fieldsMap.put(Field.Area, "area_blank1_km2");
+        fieldsMap.put(Field.Elevation, "elevation_m");
+        fieldsMap.put(Field.CityPopulation, "population_urban");
+        fieldsMap.put(Field.TimeZone, "utc_offset1");
+
         // Berlin
         fieldsMap = new HashMap<>();
         citiesFieldsMap.put(City.Berlin, fieldsMap);
@@ -90,6 +172,25 @@ public class Wikipedia {
         fieldsMap.put(Field.GDP, "GDP");
         fieldsMap.put(Field.GDPpC, "GDP_per_capita");
         fieldsMap.put(Field.Coords, "coordinates");
+
+        // Hamburg
+        fieldsMap = new HashMap<>();
+        citiesFieldsMap.put(City.Hamburg, fieldsMap);
+        fieldsMap.put(Field.Area, "area");
+        fieldsMap.put(Field.CityPopulation, "population");
+        fieldsMap.put(Field.MetroPopulation, "pop_metro");
+        fieldsMap.put(Field.GDP, "GDP");
+        fieldsMap.put(Field.GDPpC, "GDP_per_capita");
+        fieldsMap.put(Field.Coords, "coordinates");
+
+        // Munich
+        fieldsMap = new HashMap<>();
+        citiesFieldsMap.put(City.Munich, fieldsMap);
+        fieldsMap.put(Field.Coords, "coordinates");
+        fieldsMap.put(Field.LocalName, "German_name");
+        fieldsMap.put(Field.Area, "area");
+        fieldsMap.put(Field.CityPopulation, "population");
+        fieldsMap.put(Field.Elevation, "elevation");
 
         // TODO !!! Add all the cities !!!
     }
@@ -103,7 +204,7 @@ public class Wikipedia {
     }
 
     public static void main(String[] args) {
-        City city = City.NewYork;
+        City city = City.Munich;
         System.out.println(getCity(city));
         WikipediaWikitextParser.printCityInfobox(city);
     }

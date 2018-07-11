@@ -134,7 +134,7 @@ public class WikipediaWikitextParser {
             Object value;
             switch (field.fieldType) {
                 case String:
-                    value = valueStr;
+                    value = ParseUtils.extractString(valueStr);
                     break;
                 case Integer:
                     value = ParseUtils.extractInt(valueStr);
@@ -154,9 +154,13 @@ public class WikipediaWikitextParser {
 
             // Units conversion
             if (value instanceof Double) {
-                if (cityMapFieldName.endsWith("sq_mi")) {
+                if (cityMapFieldName.endsWith("_sq_mi")) {
                     // Square miles -> square km
                     value = (Double) value * 2.589992401021166d;
+                }
+                if (cityMapFieldName.endsWith("_ft")) {
+                    // Feet -> meters
+                    value = (Double) value * 0.3048d;
                 }
             }
 

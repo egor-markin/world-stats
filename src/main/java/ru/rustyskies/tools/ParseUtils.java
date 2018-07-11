@@ -2,6 +2,7 @@ package ru.rustyskies.tools;
 
 import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
+import org.jsoup.Jsoup;
 
 import java.math.BigDecimal;
 import java.util.HashMap;
@@ -29,6 +30,12 @@ public class ParseUtils {
         suffixes.put("million", BigDecimal.valueOf(1000000));
         suffixes.put("bln", BigDecimal.valueOf(1000000000));
         suffixes.put("billion", BigDecimal.valueOf(1000000000));
+    }
+
+    public String extractString(String str) {
+        str = Jsoup.parse(Jsoup.parse(str).text()).text(); // For some reason double HTML decoding is needed
+//        str = str.replaceAll("^\"|\"$", ""); // Removing leading & trailing double quote characters (if present)
+        return str;
     }
 
     public Integer extractInt(String str) {
@@ -114,7 +121,7 @@ public class ParseUtils {
 
     public String extractCoords(String str) {
         // Based on https://stackoverflow.com/questions/8263959/how-to-convert-between-degrees-minutes-seconds-to-decimal-coordinates
-        String regexCoords = "([0-9.]+)[|]?(\\d*)[|]?(\\d*)\\|([NS])\\|([0-9.]+)[|]?(\\d*)[|]?(\\d*)\\|([EW])";
+        String regexCoords = "(-?[0-9.]+)[|]?(\\d*)[|]?(\\d*)[|]?([NS]?)\\|(-?[0-9.]+)[|]?(\\d*)[|]?(\\d*)[|]?([EW]?)";
         Matcher m = Pattern.compile(regexCoords).matcher(str);
         if (m.find()) {
             if (m.groupCount() >= 8) {
@@ -153,5 +160,6 @@ public class ParseUtils {
 //        System.out.println(extractCoords("{{coord|55|45|N|37|37|E|type:adm1st_region:RU|display=inline,title}}"));
 //        System.out.println(extractCoords("{{coord|55|N|37|E|type:adm1st_region:RU|display=inline,title}}"));
 //        System.out.println(extractCoords("{{coord|40.7127|N|74.0059|W|region:US-NY|format=dms|display=inline,title}}"));
+//        System.out.println(extractCoords("{{coord|40.009376|-75.133346|format=dms|region:US-PA|display=inline,title}}"));
     }
 }
