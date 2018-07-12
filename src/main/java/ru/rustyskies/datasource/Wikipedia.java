@@ -19,6 +19,14 @@ public class Wikipedia {
 
     private final Map<City, Map<Field, String>> citiesFieldsMap = new HashMap<>();
 
+    public Map<Field, Object> getCity(City city) {
+        if (!citiesFieldsMap.containsKey(city)) {
+            log.warn("No fields mapping for the city found: " + city);
+            return new HashMap<>();
+        }
+        return WikipediaWikitextParser.getCityInfobox(city, citiesFieldsMap.get(city));
+    }
+
     static {
         Map<Field, String> fieldsMap;
 
@@ -192,19 +200,123 @@ public class Wikipedia {
         fieldsMap.put(Field.CityPopulation, "population");
         fieldsMap.put(Field.Elevation, "elevation");
 
+        // Frankfurt
+        fieldsMap = new HashMap<>();
+        citiesFieldsMap.put(City.Frankfurt, fieldsMap);
+        fieldsMap.put(Field.Coords, "coordinates");
+        fieldsMap.put(Field.LocalName, "name");
+        fieldsMap.put(Field.Area, "area");
+        fieldsMap.put(Field.CityPopulation, "pop_urban");
+        fieldsMap.put(Field.MetroPopulation, "pop_metro");
+        fieldsMap.put(Field.Elevation, "elevation");
+
+        // Cologne
+        fieldsMap = new HashMap<>();
+        citiesFieldsMap.put(City.Cologne, fieldsMap);
+        fieldsMap.put(Field.Coords, "coordinates");
+        fieldsMap.put(Field.LocalName, "German_name");
+        fieldsMap.put(Field.Area, "area");
+        fieldsMap.put(Field.CityPopulation, "population");
+        fieldsMap.put(Field.MetroPopulation, "pop_metro");
+        fieldsMap.put(Field.Elevation, "elevation");
+
+        // Toronto
+        fieldsMap = new HashMap<>();
+        citiesFieldsMap.put(City.Toronto, fieldsMap);
+        fieldsMap.put(Field.Coords, "coordinates");
+        fieldsMap.put(Field.Area, "area_total_km2");
+        fieldsMap.put(Field.CityPopulation, "population_total");
+        fieldsMap.put(Field.MetroPopulation, "population_metro");
+        fieldsMap.put(Field.Elevation, "elevation_m");
+        fieldsMap.put(Field.TimeZone, "utc_offset");
+        fieldsMap.put(Field.GDP, "blank_info_sec2");
+        fieldsMap.put(Field.GDPpC, "blank1_info_sec2");
+
+        // Montreal
+        fieldsMap = new HashMap<>();
+        citiesFieldsMap.put(City.Montreal, fieldsMap);
+        fieldsMap.put(Field.Coords, "coordinates");
+        fieldsMap.put(Field.Area, "area_total_km2");
+        fieldsMap.put(Field.CityPopulation, "population_total");
+        fieldsMap.put(Field.MetroPopulation, "population_metro");
+        fieldsMap.put(Field.Elevation, "elevation_max_m");
+        fieldsMap.put(Field.TimeZone, "utc_offset");
+        fieldsMap.put(Field.GDP, "blank_info_sec2");
+        fieldsMap.put(Field.GDPpC, "blank1_info_sec2");
+
+        // Vancouver
+        fieldsMap = new HashMap<>();
+        citiesFieldsMap.put(City.Vancouver, fieldsMap);
+        fieldsMap.put(Field.Coords, "coordinates");
+        fieldsMap.put(Field.Area, "area_total_km2");
+        fieldsMap.put(Field.CityPopulation, "population_total");
+        fieldsMap.put(Field.MetroPopulation, "population_metro");
+        fieldsMap.put(Field.TimeZone, "utc_offset");
+        fieldsMap.put(Field.GDP, "blank_info_sec2");
+        fieldsMap.put(Field.GDPpC, "blank1_info_sec2");
+
+        // Sydney
+        fieldsMap = new HashMap<>();
+        citiesFieldsMap.put(City.Sydney, fieldsMap);
+        fieldsMap.put(Field.Coords, "coordinates");
+        fieldsMap.put(Field.Area, "area");
+        fieldsMap.put(Field.CityPopulation, "pop");
+        fieldsMap.put(Field.TimeZone, "utc");
+
+        // Melbourne
+        fieldsMap = new HashMap<>();
+        citiesFieldsMap.put(City.Melbourne, fieldsMap);
+        fieldsMap.put(Field.Coords, "coordinates");
+        fieldsMap.put(Field.Area, "area");
+        fieldsMap.put(Field.CityPopulation, "pop");
+        fieldsMap.put(Field.TimeZone, "utc");
+        fieldsMap.put(Field.Elevation, "elevation");
+
+        // Brisbane
+        fieldsMap = new HashMap<>();
+        citiesFieldsMap.put(City.Brisbane, fieldsMap);
+        fieldsMap.put(Field.Coords, "coordinates");
+        fieldsMap.put(Field.Area, "area");
+        fieldsMap.put(Field.CityPopulation, "pop");
+        fieldsMap.put(Field.TimeZone, "utc");
+
+        // Perth
+        fieldsMap = new HashMap<>();
+        citiesFieldsMap.put(City.Perth, fieldsMap);
+        fieldsMap.put(Field.Coords, "coordinates");
+        fieldsMap.put(Field.Area, "area");
+        fieldsMap.put(Field.CityPopulation, "pop");
+        fieldsMap.put(Field.TimeZone, "utc");
+
+        // Adelaide
+        fieldsMap = new HashMap<>();
+        citiesFieldsMap.put(City.Adelaide, fieldsMap);
+        fieldsMap.put(Field.Coords, "coordinates");
+        fieldsMap.put(Field.Area, "area");
+        fieldsMap.put(Field.CityPopulation, "pop");
+        fieldsMap.put(Field.TimeZone, "utc");
+
+        // Auckland
+        fieldsMap = new HashMap<>();
+        citiesFieldsMap.put(City.Auckland, fieldsMap);
+        fieldsMap.put(Field.Coords, "coordinates");
+        fieldsMap.put(Field.Area, "area_urban_km2");
+        fieldsMap.put(Field.TimeZone, "utc_offset");
+        fieldsMap.put(Field.Elevation, "elevation_max_m");
+
+        // Wellington
+        fieldsMap = new HashMap<>();
+        citiesFieldsMap.put(City.Wellington, fieldsMap);
+        fieldsMap.put(Field.Coords, "coordinates");
+        fieldsMap.put(Field.Area, "area_urban_km2");
+        fieldsMap.put(Field.Elevation, "elevation_max_m");
+        fieldsMap.put(Field.TimeZone, "utc_offset");
+
         // TODO !!! Add all the cities !!!
     }
 
-    public Map<Field, Object> getCity(City city) {
-        if (!citiesFieldsMap.containsKey(city)) {
-            log.warn("No fields mapping for the city found: " + city);
-            return new HashMap<>();
-        }
-        return WikipediaWikitextParser.getCityInfobox(city, citiesFieldsMap.get(city));
-    }
-
     public static void main(String[] args) {
-        City city = City.Munich;
+        City city = City.Wellington;
         System.out.println(getCity(city));
         WikipediaWikitextParser.printCityInfobox(city);
     }

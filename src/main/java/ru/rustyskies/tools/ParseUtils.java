@@ -35,12 +35,15 @@ public class ParseUtils {
     public String extractString(String str) {
         str = Jsoup.parse(Jsoup.parse(str).text()).text(); // For some reason double HTML decoding is needed
 //        str = str.replaceAll("^\"|\"$", ""); // Removing leading & trailing double quote characters (if present)
+        str = str.replaceAll("^''|''$", ""); // Removing leading & trailing '' characters (if present)
         return str;
     }
 
     public Integer extractInt(String str) {
         if (str == null || str.trim().equals("")) {
             return null;
+        } else {
+            str = extractString(str);
         }
         Matcher m = Pattern.compile(regexInteger).matcher(str);
         if (m.find()) {
@@ -67,6 +70,8 @@ public class ParseUtils {
     public Double extractDouble(String str) {
         if (str == null || str.trim().equals("")) {
             return null;
+        } else {
+            str = extractString(str);
         }
         Matcher m = Pattern.compile(regexDouble).matcher(str);
         if (m.find()) {
@@ -79,6 +84,8 @@ public class ParseUtils {
     public BigDecimal extractCurrency(String str, String prefix, String defaultSuffix) {
         if (str == null || str.trim().equals("")) {
             return null;
+        } else {
+            str = extractString(str);
         }
 
         Matcher m = null;
@@ -161,5 +168,6 @@ public class ParseUtils {
 //        System.out.println(extractCoords("{{coord|55|N|37|E|type:adm1st_region:RU|display=inline,title}}"));
 //        System.out.println(extractCoords("{{coord|40.7127|N|74.0059|W|region:US-NY|format=dms|display=inline,title}}"));
 //        System.out.println(extractCoords("{{coord|40.009376|-75.133346|format=dms|region:US-PA|display=inline,title}}"));
+        System.out.println(extractDouble("&lt;!--CENSUS 2016 DATA ONLY, DO NOT USE ESTIMATES --&gt;631,486 [[List of the 100 largest municipalities in Canada by population|(8th]])"));
     }
 }
