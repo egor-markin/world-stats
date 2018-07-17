@@ -21,6 +21,10 @@ import java.util.Map;
 @UtilityClass
 public class Main {
 
+    // Wiki parser for tables like:
+    // https://en.wikipedia.org/wiki/List_of_municipalities_of_the_Netherlands
+    // https://en.wikipedia.org/wiki/List_of_English_districts_by_area
+
     // TODO Possible data sources
     // https://www.quora.com/Is-there-an-API-for-the-CIA-World-Factbook-or-one-that-provides-similar-information-on-Countries
     // https://stackoverflow.com/questions/11166295/retrieving-city-statistics-any-apis-or-databases

@@ -30,12 +30,14 @@ public class ParseUtils {
         suffixes.put("million", BigDecimal.valueOf(1000000));
         suffixes.put("bln", BigDecimal.valueOf(1000000000));
         suffixes.put("billion", BigDecimal.valueOf(1000000000));
+        suffixes.put("trillion", BigDecimal.valueOf(1000000000000L));
     }
 
     public String extractString(String str) {
         str = Jsoup.parse(Jsoup.parse(str).text()).text(); // For some reason double HTML decoding is needed
 //        str = str.replaceAll("^\"|\"$", ""); // Removing leading & trailing double quote characters (if present)
         str = str.replaceAll("^''|''$", ""); // Removing leading & trailing '' characters (if present)
+//        str = str.replaceAll("^''|''$", ""); // Stripping the string from all the wikitext links
         return str;
     }
 
@@ -168,6 +170,11 @@ public class ParseUtils {
 //        System.out.println(extractCoords("{{coord|55|N|37|E|type:adm1st_region:RU|display=inline,title}}"));
 //        System.out.println(extractCoords("{{coord|40.7127|N|74.0059|W|region:US-NY|format=dms|display=inline,title}}"));
 //        System.out.println(extractCoords("{{coord|40.009376|-75.133346|format=dms|region:US-PA|display=inline,title}}"));
-        System.out.println(extractDouble("&lt;!--CENSUS 2016 DATA ONLY, DO NOT USE ESTIMATES --&gt;631,486 [[List of the 100 largest municipalities in Canada by population|(8th]])"));
+//        System.out.println(extractDouble("&lt;!--CENSUS 2016 DATA ONLY, DO NOT USE ESTIMATES --&gt;631,486 [[List of the 100 largest municipalities in Canada by population|(8th]])"));
+        //System.out.println(extractCurrency("[[CNY|¥]] 3.01 trillion&lt;br/&gt;[[USD|$]] 446.31 billion([[List of Chinese administrative divisions by GDP|11th]])", "\\$", ""));
+
+        // TODO FROM HERE !!!
+        // "[[CNY|¥]]" -> ¥
+        System.out.println("[[CNY|fff]]".replaceAll("\\[\\[\\w+\\|\\w+", ""));
     }
 }

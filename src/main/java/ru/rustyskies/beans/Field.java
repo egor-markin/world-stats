@@ -40,7 +40,6 @@ public enum Field {
     TimeZone("TimeZone", "", FieldType.String, null, null, "", "https://en.wikipedia.org/wiki/Time_zone"),
     Coords("Coordinates", "", FieldType.Coordinates, null, null, "GPS Coordinates", "https://en.wikipedia.org/wiki/Geographic_coordinate_system");
 
-
     public final String title;
     public final String unit;
     public final FieldType fieldType;

@@ -53,7 +53,7 @@ public enum City {
     Tokyo("Tokyo", Country.Japan),
     Yokohama("Yokohama", Country.Japan),
     Osaka("Osaka", Country.Japan),
-    KualaLumpur("Kuala Lumpur", Country.Malaysia),
+    KualaLumpur("Kuala Lumpur", Country.Malaysia, "Kuala_Lumpur"),
     Shanghai("Shanghai", Country.China),
     Beijing("Beijing", Country.China, new String[] { "Beijing (Peking)" }),
     Guangzhou("Guangzhou", Country.China),
