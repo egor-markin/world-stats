@@ -435,16 +435,39 @@ public class Wikipedia {
         fieldsMap.put(Field.Elevation, "elevation_m");
         fieldsMap.put(Field.Population, "population_total");
         fieldsMap.put(Field.TimeZone, "utc_offset");
-        fieldsMap.put(Field.GDP, "blank1_info"); // !!!! Doesn't work correctly !!!!
-        fieldsMap.put(Field.GDPpC, "blank2_info"); // !!!! Doesn't work correctly !!!!
+        fieldsMap.put(Field.GDP, "blank1_info");
+        fieldsMap.put(Field.GDPpC, "blank2_info");
         fieldsMap.put(Field.HDI, "blank4_info");
+
+        // Beijing
+        fieldsMap = new HashMap<>();
+        citiesFieldsMap.put(City.Beijing, fieldsMap);
+        fieldsMap.put(Field.Coords, "coordinates");
+        fieldsMap.put(Field.Area, "area_urban_km2");
+        fieldsMap.put(Field.Elevation, "elevation_m");
+        fieldsMap.put(Field.Population, "population_total");
+        fieldsMap.put(Field.MetroPopulation, "population_metro");
+        fieldsMap.put(Field.TimeZone, "utc_offset");
+        fieldsMap.put(Field.GDP, "blank1_info_sec1");
+        fieldsMap.put(Field.GDPpC, "blank2_info_sec1");
+        fieldsMap.put(Field.HDI, "blank4_info_sec1");
+
+        // Guangzhou
+        fieldsMap = new HashMap<>();
+        citiesFieldsMap.put(City.Guangzhou, fieldsMap);
+        fieldsMap.put(Field.Coords, "coordinates");
+        fieldsMap.put(Field.Area, "area_urban_km2");
+        fieldsMap.put(Field.Elevation, "elevation_m");
+        fieldsMap.put(Field.Population, "population_urban");
+        fieldsMap.put(Field.TimeZone, "utc_offset");
+        fieldsMap.put(Field.GDP, "blank1_info");
+        fieldsMap.put(Field.GDPpC, "blank2_info");
 
         // TODO !!! Add all the cities !!!
     }
 
     public static void main(String[] args) {
-        //City city = City.Tokyo;
-        City city = City.Shanghai;
+        City city = City.Guangzhou;
         System.out.println(getCity(city));
         WikipediaWikitextParser.printCityInfobox(city);
     }

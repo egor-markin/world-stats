@@ -37,7 +37,7 @@ public class ParseUtils {
         str = Jsoup.parse(Jsoup.parse(str).text()).text(); // For some reason double HTML decoding is needed
 //        str = str.replaceAll("^\"|\"$", ""); // Removing leading & trailing double quote characters (if present)
         str = str.replaceAll("^''|''$", ""); // Removing leading & trailing '' characters (if present)
-//        str = str.replaceAll("^''|''$", ""); // Stripping the string from all the wikitext links
+        str = str.replaceAll("\\[\\[.*?\\|(.*?)]]", "$1"); // Stripping the string from all the wikitext links, like "[[CNY|¥]]" -> "¥"
         return str;
     }
 
@@ -118,7 +118,7 @@ public class ParseUtils {
                     log.warn("Unknown suffix: " + suffix);
                 }
             } else {
-                if (defaultSuffix != null) {
+                if (defaultSuffix != null && !defaultSuffix.trim().equals("") && suffixes.containsKey(defaultSuffix)) {
                     result = result.multiply(suffixes.get(defaultSuffix));
                 }
             }
@@ -159,11 +159,10 @@ public class ParseUtils {
     }
 
     public static void main(String[] args) {
-//        String s = "1234 dfdf ($554.855 billion)&lt;ref name=imf&gt;";
+//        String s = "1234 dfdf ($ 554.855 billion)&lt;ref name=imf&gt;";
 //        String s = "1234 dfdf (554.855 billion)&lt;ref name=imf&gt;";
 //        String s = "ddd";
-//        System.out.println("Result: " + extractCurrency(s, "\\$"));
-//        System.out.println(extractCurrency("ddd$33,123.33gbg"));
+//        System.out.println("Result: " + extractCurrency(s, "\\$\\s*", ""));
 //        System.out.println("Result: " + extractCurrency("554855"));
 //        System.out.println(extractCoords("{{coord|52|31|00|N|13|23|20|E|format=dms|display=inline,title}}"));
 //        System.out.println(extractCoords("{{coord|55|45|N|37|37|E|type:adm1st_region:RU|display=inline,title}}"));
@@ -171,10 +170,9 @@ public class ParseUtils {
 //        System.out.println(extractCoords("{{coord|40.7127|N|74.0059|W|region:US-NY|format=dms|display=inline,title}}"));
 //        System.out.println(extractCoords("{{coord|40.009376|-75.133346|format=dms|region:US-PA|display=inline,title}}"));
 //        System.out.println(extractDouble("&lt;!--CENSUS 2016 DATA ONLY, DO NOT USE ESTIMATES --&gt;631,486 [[List of the 100 largest municipalities in Canada by population|(8th]])"));
-        //System.out.println(extractCurrency("[[CNY|¥]] 3.01 trillion&lt;br/&gt;[[USD|$]] 446.31 billion([[List of Chinese administrative divisions by GDP|11th]])", "\\$", ""));
-
-        // TODO FROM HERE !!!
-        // "[[CNY|¥]]" -> ¥
-        System.out.println("[[CNY|fff]]".replaceAll("\\[\\[\\w+\\|\\w+", ""));
+//        System.out.println("aaa[[CNY|¥]]bbb".replaceAll("\\[\\[\\S+\\|(\\S+)]]", "$1")); // // "[[CNY|¥]]" -> ¥
+//        System.out.println("[[CNY|¥]] 3.01 trillion&lt;br/&gt;[[USD|$]] 446.31 billion([[List of Chinese administrative divisions by GDP|11th]])".replaceAll("\\[\\[.*?\\|(.*?)]]", "$1")); // // "[[CNY|¥]]" -> ¥
+//        System.out.println(extractString("[[CNY|¥]] 3.01 trillion&lt;br/&gt;[[USD|$]] 446.31 billion([[List of Chinese administrative divisions by GDP|11th]])"));
+        System.out.println(extractCurrency("[[CNY|¥]]153,134&lt;br/&gt;[[USD|$]]24,311 ($46,778, PPP)", "\\$\\s*", ""));
     }
 }

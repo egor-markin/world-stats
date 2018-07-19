@@ -143,7 +143,7 @@ public class WikipediaWikitextParser {
                     value = ParseUtils.extractDouble(valueStr);
                     break;
                 case Currency:
-                    value = ParseUtils.extractCurrency(valueStr, "\\$", field.defaultSuffix);
+                    value = ParseUtils.extractCurrency(valueStr, "\\$\\s*", field.defaultSuffix);
                     break;
                 case Coordinates:
                     value = ParseUtils.extractCoords(valueStr);
@@ -171,8 +171,10 @@ public class WikipediaWikitextParser {
 
     public void printCityInfobox(City city) {
         Map<String, String> map = getCityInfobox(city);
-        for (String param : map.keySet()) {
-            System.out.println(param + " -> " + map.get(param));
+        if (map != null) {
+            for (String param : map.keySet()) {
+                System.out.println(param + " -> " + map.get(param));
+            }
         }
     }
 }
