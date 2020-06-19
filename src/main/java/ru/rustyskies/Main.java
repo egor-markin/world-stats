@@ -6,7 +6,6 @@ import ru.rustyskies.beans.City;
 import ru.rustyskies.beans.Country;
 import ru.rustyskies.beans.Field;
 import ru.rustyskies.datasource.*;
-import ru.rustyskies.tools.ProxyUtils;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -71,7 +70,7 @@ public class Main {
     }
 
     public void main(String[] args) {
-        ProxyUtils.enableSocksProxy();
+        //ProxyUtils.enableSocksProxy();
 
         // TODO !!! Wikipedia datasource !!!
 
@@ -89,7 +88,7 @@ public class Main {
             map.put(Field.GDP, Worldbank.getGdp(country));
             map.put(Field.GDPpC, population != 0 ? gdp / population : 0);
 
-            map.putAll(Numbeo.getData(country));
+            map.putAll(Numbeo.getCountryData(country));
         }
 
         // Cities
@@ -97,6 +96,7 @@ public class Main {
             Map<Field, Object> map = addCity(city);
             map.put(Field.Population, Datahub.getCityPopulation(city));
             map.putAll(Wikipedia.getCity(city));
+            map.putAll(Numbeo.getCityData(city));
         }
 
         GoogleSheetsReport.updateGoogleSheets(dataList);

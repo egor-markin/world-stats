@@ -11,7 +11,7 @@ public class JSoupUtils {
 
     // https://jsoup.org/cookbook/extracting-data/selector-syntax
 
-    private static final String QUERIES_SEPARATOR = "->";
+    private final String QUERIES_SEPARATOR = "->";
 
     public String getField(Document document, String cssQuery) {
         String[] queries = cssQuery.split(QUERIES_SEPARATOR);

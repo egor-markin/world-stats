@@ -2,5 +2,5 @@
 .idea/
 build/
 out/
-src/main/resources/client_secret.json
+src/main/resources/credentials.json
 world-stats.iml

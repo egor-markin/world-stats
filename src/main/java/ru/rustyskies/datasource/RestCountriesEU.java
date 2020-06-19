@@ -9,6 +9,7 @@ import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -60,7 +61,7 @@ public enum RestCountriesEU {
         String jsonText;
         if (!USE_CACHED_FILE) {
             try {
-                jsonText = IOUtils.toString(new URI(URL), Charset.forName("UTF-8"));
+                jsonText = IOUtils.toString(new URI(URL), StandardCharsets.UTF_8);
             } catch (IOException | URISyntaxException e) {
                 throw new RuntimeException(e);
             }
@@ -70,7 +71,7 @@ public enum RestCountriesEU {
                 throw new RuntimeException("Unable to locate resource file: " + RESOURCE_FILE);
             }
             try {
-                jsonText = IOUtils.toString(inputStream, Charset.forName("UTF-8"));
+                jsonText = IOUtils.toString(inputStream, StandardCharsets.UTF_8);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }

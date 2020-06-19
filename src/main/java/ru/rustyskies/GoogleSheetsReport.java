@@ -20,17 +20,17 @@ import java.util.Map;
 @UtilityClass
 public class GoogleSheetsReport {
 
-    public static final String SPREADSHEET_ID = "1ZZ2Jd8ART6gqHbX_j4S8ZBI5DRvRodmxTfEJCZ_lZ8Q";
+    public final String SPREADSHEET_ID = "1ZZ2Jd8ART6gqHbX_j4S8ZBI5DRvRodmxTfEJCZ_lZ8Q";
 
-    public static final String SHEET_ID = "Sheet2";
+    public final String SHEET_ID = "Sheet2";
 
-    private static final List<Field> PREDEFINED_HEADER_COLUMNS = Arrays.asList(
+    private final List<Field> PREDEFINED_HEADER_COLUMNS = Arrays.asList(
             Field.Country,
             Field.City,
             Field.Type
     );
 
-    private static final Float[] HEADER_COLOR_RGB = new Float[] { 70f, 70f, 70f };
+    private final Float[] HEADER_COLOR_RGB = new Float[] { 70f, 70f, 70f };
 
     public void updateGoogleSheets(List<Map<Field, Object>> dataList) {
         GoogleSheetsApi api = GoogleSheetsApi.INSTANCE;
@@ -129,7 +129,7 @@ public class GoogleSheetsReport {
                 CellFormat cellFormat;
                 if (columnIndex == 0) {
                     cellFormat = firstColumnDataFormat;
-                } else if (value instanceof Integer || value instanceof Double) {
+                } else if (value instanceof Integer || value instanceof Double || value instanceof BigDecimal) {
                     NumberFormat nf = new NumberFormat().setType("NUMBER");
                     if (column.getFieldNumberFormatPattern() != null && !column.getFieldNumberFormatPattern().trim().equals("")) {
                         nf.setPattern(column.getFieldNumberFormatPattern());

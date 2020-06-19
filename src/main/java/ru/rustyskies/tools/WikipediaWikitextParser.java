@@ -20,9 +20,11 @@ public class WikipediaWikitextParser {
     private final String GROUP_SEPARATOR = "|";
     private final String INFOBOX_PREFIX = BLOCK_START + "Infobox";
 
+    private final String URL = "https://en.wikipedia.org/w/api.php?action=parse&prop=wikitext&format=xml&page=";
+
     private String getWikiPageXml(String pageName) {
         try {
-            return Jsoup.connect("https://en.wikipedia.org/w/api.php?action=parse&page=" + pageName + "&prop=wikitext&format=xml").get().outerHtml();
+            return Jsoup.connect(URL + pageName).get().outerHtml();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -30,8 +32,8 @@ public class WikipediaWikitextParser {
 
     private void printPos(String wikitext, int pos, int depth) {
         final int offset = 60;
-        int lOffset = (pos - offset) < 0 ? 0 : (pos - offset);
-        int rOffset = wikitext.length() < (pos + offset) ? wikitext.length() : (pos + offset);
+        int lOffset = Math.max(pos - offset, 0);
+        int rOffset = Math.min(wikitext.length(), pos + offset);
         System.out.println("Current pos: " + wikitext.substring(lOffset, pos) + " (" + depth + ") " + wikitext.substring(pos, rOffset));
     }
 

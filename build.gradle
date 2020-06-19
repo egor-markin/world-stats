@@ -8,23 +8,25 @@ repositories {
 }
 
 dependencies {
-    testCompile group: 'junit', name: 'junit', version: '4.12'
+    testCompile group: 'junit', name: 'junit', version: '4.13'
 
-    compile 'com.google.api-client:google-api-client:1.23.0'
-    compile 'com.google.oauth-client:google-oauth-client-jetty:1.23.0'
-    compile 'com.google.apis:google-api-services-sheets:v4-rev506-1.23.0'
+    compile 'com.google.api-client:google-api-client:1.30.9'
+    compile 'com.google.oauth-client:google-oauth-client-jetty:1.30.6'
+    compile 'com.google.apis:google-api-services-sheets:v4-rev612-1.25.0'
 
-    compile group: 'org.projectlombok', name: 'lombok', version: '1.16.20'
-    compile group: 'org.slf4j', name: 'slf4j-api', version: '1.7.25'
-    compile group: 'org.slf4j', name: 'slf4j-log4j12', version: '1.7.25'
+    compileOnly 'org.projectlombok:lombok:1.18.12'
+    annotationProcessor 'org.projectlombok:lombok:1.18.12'
+
+    compile group: 'org.slf4j', name: 'slf4j-api', version: '1.7.30'
+    compile group: 'org.slf4j', name: 'slf4j-log4j12', version: '1.7.30'
     compile group: 'log4j', name: 'log4j', version: '1.2.17'
 
-    compile group: 'org.jsoup', name: 'jsoup', version: '1.11.2'
+    compile group: 'org.jsoup', name: 'jsoup', version: '1.13.1'
 
-    compile group: 'com.google.code.gson', name: 'gson', version: '2.8.1'
-    compile group: 'commons-io', name: 'commons-io', version: '2.5'
-    compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.6'
-    compile group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.5.5'
-    compile group: 'org.apache.commons', name: 'commons-csv', version: '1.5'
+    compile group: 'com.google.code.gson', name: 'gson', version: '2.8.6'
+    compile group: 'commons-io', name: 'commons-io', version: '2.7'
+    compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.10'
+    compile group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.5.12'
+    compile group: 'org.apache.commons', name: 'commons-csv', version: '1.8'
 
 }

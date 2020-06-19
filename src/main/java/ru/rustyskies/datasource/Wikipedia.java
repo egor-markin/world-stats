@@ -73,11 +73,11 @@ public class Wikipedia {
         fieldsMap.put(Field.Area, "area_km2");
 
         // Penza
-        fieldsMap = new HashMap<>();
-        citiesFieldsMap.put(City.Penza, fieldsMap);
-        fieldsMap.put(Field.LocalName, "ru_name");
-        fieldsMap.put(Field.Coords, "coordinates");
-        fieldsMap.put(Field.Population, "pop_latest");
+//        fieldsMap = new HashMap<>();
+//        citiesFieldsMap.put(City.Penza, fieldsMap);
+//        fieldsMap.put(Field.LocalName, "ru_name");
+//        fieldsMap.put(Field.Coords, "coordinates");
+//        fieldsMap.put(Field.Population, "pop_latest");
 
         // New York
         fieldsMap = new HashMap<>();
@@ -152,14 +152,14 @@ public class Wikipedia {
         fieldsMap.put(Field.TimeZone, "utc_offset1");
 
         // Cordoba
-        fieldsMap = new HashMap<>();
-        citiesFieldsMap.put(City.Cordoba, fieldsMap);
-        fieldsMap.put(Field.LocalName, "name");
-        fieldsMap.put(Field.Coords, "coordinates");
-        fieldsMap.put(Field.Area, "area_land_km2");
-        fieldsMap.put(Field.Elevation, "elevation_m");
-        fieldsMap.put(Field.Population, "population_urban");
-        fieldsMap.put(Field.TimeZone, "utc_offset1");
+//        fieldsMap = new HashMap<>();
+//        citiesFieldsMap.put(City.Cordoba, fieldsMap);
+//        fieldsMap.put(Field.LocalName, "name");
+//        fieldsMap.put(Field.Coords, "coordinates");
+//        fieldsMap.put(Field.Area, "area_land_km2");
+//        fieldsMap.put(Field.Elevation, "elevation_m");
+//        fieldsMap.put(Field.Population, "population_urban");
+//        fieldsMap.put(Field.TimeZone, "utc_offset1");
 
         // Rosario
         fieldsMap = new HashMap<>();
@@ -464,10 +464,20 @@ public class Wikipedia {
         fieldsMap.put(Field.GDPpC, "blank2_info");
 
         // TODO !!! Add all the cities !!!
+        // Chongqing
+//        fieldsMap = new HashMap<>();
+//        citiesFieldsMap.put(City.Chongqing, fieldsMap);
+//        fieldsMap.put(Field.Coords, "coordinates");
+//        fieldsMap.put(Field.Area, "area_total_km2");
+//        fieldsMap.put(Field.Elevation, "elevation_m");
+//        fieldsMap.put(Field.Population, "population_total");
+//        fieldsMap.put(Field.TimeZone, "utc_offset");
+//        fieldsMap.put(Field.GDP, "blank1_info"); // GDP is incorrect - write a separate function for GDP retrieving
+//        fieldsMap.put(Field.GDPpC, "blank2_info");
     }
 
     public static void main(String[] args) {
-        City city = City.Guangzhou;
+        City city = City.Chongqing;
         System.out.println(getCity(city));
         WikipediaWikitextParser.printCityInfobox(city);
     }

@@ -39,7 +39,7 @@ public enum GoogleSheetsApi {
     // Based on https://developers.google.com/sheets/api/quickstart/java
 
     private static final String APPLICATION_NAME = "world-stats";
-    private static final String OAUTH_SECRET_FILE = "/client_secret.json";
+    private static final String OAUTH_SECRET_FILE = "/credentials.json";
 
     private final FileDataStoreFactory DATA_STORE_FACTORY;
 
