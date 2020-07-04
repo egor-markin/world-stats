@@ -7,7 +7,6 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Getter
 public enum City {
@@ -76,7 +75,10 @@ public enum City {
     Gothenburg("Gothenburg", Country.Sweden, new String[] { "Göteborg" }),
     Oslo("Oslo", Country.Norway),
     Copenhagen("Copenhagen", Country.Denmark, new String[] { "Kobenhavn", "København" }),
-    Reykjavik("Reykjavik", Country.Iceland);
+    Reykjavik("Reykjavik", Country.Iceland),
+    Tallinn("Tallinn", Country.Estonia),
+    Riga("Riga", Country.Latvia),
+    Vilnius("Vilnius", Country.Lithuania);
 
     public final String name;
     public final Country country;
